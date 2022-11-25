@@ -90,7 +90,7 @@ export default {
     left: 0;
 
 }
-
+/* test */
 /* .top-bar .top-bar-left img {
     width: 596px;
 } */
