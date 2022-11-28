@@ -2,7 +2,8 @@
     <div class="container" :style="{ 'height': curHeight + 'px' }">
         <!-- 头部模块 -->
         <centerHeader1 />
-
+        <!-- 工具栏模块 -->
+        <!-- <toolBar></toolBar> -->
         <!-- 左侧菜单模块 -->
         <menu1 :showSign="active" ></menu1>
 
@@ -51,6 +52,7 @@
 import bus from '../utils'
 import mapOl1 from '../components/map/mapOl1.vue'
 import centerHeader1 from '../components/header/centerHeader1.vue'
+import toolBar from '../components/map/toolBar.vue'
 import rightcontent1 from '../components/subcontent/rightcontent1.vue'
 import rightcontent2 from '../components/subcontent/rightcontent2.vue'
 import rightcontent3 from '../components/subcontent/rightcontent3.vue'
@@ -66,6 +68,7 @@ export default {
         menu1,
         mapOl1,
         centerHeader1,
+        toolBar,
         rightcontent1,
         rightcontent2,
         rightcontent3,
