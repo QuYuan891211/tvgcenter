@@ -5,7 +5,10 @@
 </template>
 <script>
 import { tsThisType } from '@babel/types';
+// import { ol } from 'dist/static/libs/ol5/ol';
 import bus from '../../utils'
+// import MousePosition from "ol/control/MousePosition";
+// import { format } from "ol/coordinate";
 
 export default {
     data() {
@@ -161,59 +164,102 @@ export default {
                 source: new ol.source.XYZ({
                     url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
                     wrapX: false
-                })
+                }),
+                preload:Infinity
             });
             var TiandiMap_cva = new ol.layer.Tile({
                 name: "天地图矢量注记图层",
                 source: new ol.source.XYZ({
                     url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
                     wrapX: false
-                })
+                }),
+                preload:Infinity
             });
             var TiandiMap_img = new ol.layer.Tile({
                 name: "天地图影像图层",
                 source: new ol.source.XYZ({
                     url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
                     wrapX: false
-                })
+                }),
+                preload:Infinity
             });
             var TiandiMap_cia = new ol.layer.Tile({
                 name: "天地图影像注记图层",
                 source: new ol.source.XYZ({
                     url: "http://t0.tianditu.com/DataServer?T=cia_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
                     wrapX: false
-                })
+                }),
+                preload:Infinity
             });
 
             //实例化Map对象加载地图
             this.map = new ol.Map({
                 //地图容器div的ID
                 target: 'olMap',
-                //地图容器中加载的图层
+                //地图容器中加载的图层:加载影像图
                 layers: [TiandiMap_img, TiandiMap_cia],
+                //地图容器中加载的图层:加载矢量图层
+                // layers: [TiandiMap_vec, TiandiMap_cva],
                 //地图视图设置
                 view: new ol.View({
                     //地图初始中心点
                     center: ol.proj.transform([121.29, 31.14], 'EPSG:4326', 'EPSG:3857'),
                     //地图初始显示级别
                     zoom: 5
-                })
+
+                }),
+                //TODO:复位经纬度需要核对
+                // controls: ol.control.defaults().extend([
+                //  new ol.control.ZoomToExtent({
+                //     label: 'E',
+                //     tipLabel:'地图复位到中国海区',
+                //     extent: [
+                //     10500000, 40,
+                //     14500000, 4500000
+                //     ],
+                //     // overviewMapControl
+                // }),
+
+                // ]),bar
+
             });
 
-            //实例化鼠标位置控件（MousePosition）
+
+
+            // //鹰眼控件
+            // var overviewMapControl = new ol.control.OverviewMap({
+            //     layers: [
+            //         new new ol.layer.Tile({
+            //         source: new ol.source.XYZ({
+            //         url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
+            //         wrapX: false
+            //     })
+            //         })
+            //     ]
+            // });
+
+           
+            //比例尺控件
+            this.map.addControl(new ol.control.ScaleLine());
+             //鼠标坐标控件
             var mousePositionControl = new ol.control.MousePosition({
-                //坐标格式
-                coordinateFormat: ol.coordinate.createStringXY(4),
-                //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
-                projection: 'EPSG:4326',
-                //坐标信息显示样式类名，默认是'ol-mouse-position'
-                className: 'custom-mouse-position',
-                //显示鼠标位置信息的目标容器
-                target: document.getElementById('mouse-position'),
-                //未定义坐标的标记
-                undefinedHTML: '&nbsp;'
-            });
+            //坐标格式
+            coordinateFormat: function (coordinate) {
+                return ol.coordinate.format(coordinate, "经度:{x} &nbsp; 纬度:{y}", 2);
+            },
+            //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
+            projection: "EPSG:4326",
+            //坐标信息显示样式类名，默认是'ol-mouse-position'
+            className: "custom-mouse-position",
+            //显示鼠标位置信息的目标容器
+            target: document.getElementById("mouse-position"),
+            //未定义坐标的标记
+            undefinedHTML: "&nbsp;",
+        });
             this.map.addControl(mousePositionControl);
+
+
+            
 
 
         },
@@ -226,4 +272,10 @@ export default {
     width: 100%;
     height: 100vh;
 }
+
+/* TODO:不起作用 */
+.ol-zoom .ol-zoom-in {
+    display:none;
+}
+
 </style>
