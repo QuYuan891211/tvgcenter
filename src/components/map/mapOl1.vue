@@ -205,7 +205,10 @@ export default {
                     //地图初始中心点
                     center: ol.proj.transform([121.29, 31.14], 'EPSG:4326', 'EPSG:3857'),
                     //地图初始显示级别
-                    zoom: 5
+                    zoom: 5,
+                    minZoom:3,
+                    maxZoom:8
+
 
                 }),
                 //TODO:复位经纬度需要核对
