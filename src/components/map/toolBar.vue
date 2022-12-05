@@ -1,5 +1,10 @@
 <template>
-    <div class = "ToolLib">
-        <input type="button" class="ButtonLib" id="panto" value="预报区域"/>
-    </div>
+
 </template>
+<script>
+   var view = this.map.getView()
+    var zoom = view.getZoom()
+    var center = view.getCenter()
+    var rotation = view .getRotation()
+
+</script>
