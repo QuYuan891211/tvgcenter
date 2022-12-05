@@ -1,35 +1,34 @@
 <template>
     <!-- 学校基本信息 -->
     <div class="sub-content-info">
-        <!-- TODO:标题和时间放到同一行 -->
-        <div class="title">海区最大有效波高</div>
+        <div class="title">海区最大平均风速</div>
         <div class="time">2022年11月18日08时</div>
         <div>
-            <div id="barChart" style="width: 100%;height:210px;"></div>
+            <div id="barChart_wind" style="width: 100%;height:210px;"></div>
         </div>
     </div>
 </template>
 <script>
 export default {
-    name: 'subContent6',
+    name: 'subContent7',
     data() {
         return {
-            data_wave:null
+            data_wind:null
         }
     },
     methods: {
         //取得就业率柱状图数据
         getBarChart() {
             //获取数值
-            this.data_wave = [0.7, 0.4, 0.8, 1.7, 1.9, 1.1, 0, 1.6];
-            let arr = [0.7, 0.4, 0.8, 1.7, 1.9, 1.1, 0, 1.6];
+            this.data_wind = [6.5, 1.9, 7.1, 8.8, 8.7, 9.7, 0, 8.1];
+            let arr = [6.5, 1.9, 7.1, 8.8, 8.7, 9.7, 0, 8.1];
             let max = arr.sort().reverse()[0];
 
             console.log('getBarChart');
             //直接引用进来使用
             var echarts = require('echarts');
             // 基于准备好的dom，获取main节点init初始化echarts实例
-            var myChart = echarts.init(document.getElementById('barChart'));
+            var myChart = echarts.init(document.getElementById('barChart_wind'));
 
             var option;
             option = {
@@ -85,7 +84,7 @@ export default {
                         position:'left', 
                         offset:0, 
                         type: 'value',
-                        name: '米',
+                        name: '米每秒',
                         min: 0,
                         // max: Math.max(this.data_wave),
                         max:max,
@@ -115,7 +114,7 @@ export default {
                 ],
                 series: [
                     {
-                        name: '有效波高',
+                        name: '风速',
                         type: 'bar',
                         itemStyle: {
                             normal: {
@@ -128,7 +127,7 @@ export default {
                                 )
                             }
                         },
-                        data: this.data_wave
+                        data: this.data_wind
                     }
                 ],
                 tooltip: {

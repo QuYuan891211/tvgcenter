@@ -1,7 +1,7 @@
 <template>
   <!-- 学校基本信息 -->
   <div class="sub-content-info">
-    <div class=title>设备统计</div>
+    <div class=title>要素统计</div>
     <div style="display:flex">
       <div style="position:relative; height:200px; width:45%">
         <div class="pie-bottom-icon">
@@ -11,20 +11,25 @@
           <img src="@/assets/pie-bg.png" alt="">
         </div>
         <div class="pie-icon img-bounce">
-          <img src="@/assets/pie1.png" alt="">
+          <img src="@/assets/ele.png" alt="">
         </div>
       </div>
-      <div>
+      <div class="static-list">
         
         <div class="static-bg">
-          <div class="name">TVG-50单通道</div>
-          <div style="color: #f9de64;font-size:23px;text-align: center;padding:7px 0;">45 <span
-              style="color: #ffffff;font-size:14px;">个</span> </div>
+          <div class="name">海浪</div>
+          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">9 <span
+              style="color: #5cb2fa;font-size:14px;">个</span> </div>
         </div>
         <div class="static-bg">
-          <div class="name">TVG-63三通道</div>
-          <div style="color: #5cb2fa;font-size:23px;text-align: center;padding:7px 0;">200 <span
-              style="color: #ffffff;font-size:14px;">个</span> </div>
+          <div class="name">气象</div>
+          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">7 <span
+              style="color: #5cb2fa;font-size:14px;">个</span> </div>
+        </div>
+        <div class="static-bg">
+          <div class="name">海温</div>
+          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">1 <span
+              style="color: #5cb2fa;font-size:14px;">个</span> </div>
         </div>
       </div>
     </div>
@@ -74,20 +79,23 @@ export default {
 }
 
 .sub-content-info .pie-icon img {
-  width: 121px;
-  height: 80px;
+  width: 180px;
+  height: 180px;
   position: absolute;
   /* bottom: 8%; */
-  left: 15px;
-  margin-top: 45%;
+  left: 1px;
+  margin-top: 1%;
 }
-
+.static-list{
+  height: 100px;
+  /* margin-bottom: %; */
+}
 .sub-content-info .pie-bg-icon img {
   width: 121px;
   height: 80px;
   position: absolute;
   top: 4%;
-  left: 15px;
+  left: 15%;
 }
 
 .sub-content-info .pie-bottom-icon img {
@@ -95,7 +103,7 @@ export default {
   height: 81px;
   position: absolute;
   bottom: 8%;
-  left: 0;
+  left: 8%;
 }
 
 .sub-content-info .static{

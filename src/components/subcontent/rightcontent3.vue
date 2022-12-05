@@ -9,8 +9,8 @@
             <img class="area-icon" src="@/assets/build.png" alt="">
           </div>
           <div style="margin-bottom:1%;">
-            <div class="subtitle">当前用户数量</div>
-            <div class="content">5 <span class="unit">个</span></div>
+            <div class="subtitle">当前浮标数量</div>
+            <div class="content">29 <span class="unit">个</span></div>
           </div>
         </div>
         <div style="display:flex;margin-bottom:1%">
@@ -18,8 +18,8 @@
             <img class="build-icon" src="@/assets/build.png" alt="">
           </div>
           <div>
-            <div class="subtitle">当前设备数量</div>
-            <div class="content">245 <span class="unit">个</span></div>
+            <div class="subtitle">当前海洋站数量</div>
+            <div class="content">0 <span class="unit">个</span></div>
           </div>
         </div>
         <div style="display:flex;margin-bottom:1%">
@@ -27,14 +27,14 @@
             <img class="build-icon" src="@/assets/build.png" alt="">
           </div>
           <div>
-            <div class="subtitle">设备类型数量</div>
-            <div class="content">2 <span class="unit">种</span></div>
+            <div class="subtitle">当前志愿船数量</div>
+            <div class="content">0 <span class="unit">种</span></div>
           </div>
         </div>
       </div>
       <div style="position:relative; width:50%;">
         <div class="cube-icon img-bounce">
-          <img src="@/assets/5.png" alt="">
+          <img src="@/assets/file.png" alt="">
         </div>
         <div class="light-bg">
           <img src="@/assets/light-bg.png" alt="">
@@ -115,11 +115,11 @@ export default {
 }
 
 .sub-content-info .cube-icon img {
-  width: 121px;
-  height: 123px;
+  width: 180px;
+  height: 180px;
   position: absolute;
-  top: 12%;
-  left: 42%;
+  top: 30%;
+  left: 30%;
 }
 
 
@@ -136,13 +136,13 @@ export default {
 }
 
 .sub-content-info .static-bg {
-  margin-top: 12px;
+  margin-top: 10px;
   background: url(../../assets/static-bg.png);
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center center;
   width: 206px;
-  height: 66px;
+  height: 50px;
 }
 
 .static-bg .name {

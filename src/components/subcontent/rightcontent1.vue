@@ -1,12 +1,30 @@
 <template>
 <div class="sub-content-info">
-    <div class=title>在线统计</div>
+    <div class=title>数据到报与要素统计</div>
     <div style="display:flex;position:relative">
-            <div style="width:45%;margin-left:-8%">
+            <div style="width:40%;margin-left:-8%">
                 <div class="pie-chart" id="pieChart" style="width: 262px;height:180px;"></div>
             </div>
-            <div>
-                <div class="barnum-chart" id="barNumChart" style="width: 240px;height:164px;"></div>
+            <div  style="width:0%;margin-left:25%">
+                <!-- <div class="barnum-chart" id="barNumChart" style="width: 100px;height:164px;"></div> -->
+                <div class="static-list">
+        
+        <div class="static-bg-ele">
+          <div class="name">海浪要素</div>
+          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">9 <span
+              style="color: #5cb2fa;font-size:14px;">种</span> </div>
+        </div>
+        <div class="static-bg-ele">
+          <div class="name">气象要素</div>
+          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">7 <span
+              style="color: #5cb2fa;font-size:14px;">种</span> </div>
+        </div>
+        <div class="static-bg-ele">
+          <div class="name">海温要素</div>
+          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">1 <span
+              style="color: #5cb2fa;font-size:14px;">种</span> </div>
+        </div>
+      </div>
             </div>
     </div>
 </div>
@@ -29,7 +47,7 @@ export default {
             // 指定图表的配置项和数据
             var option = {
                 tooltip: {
-                    show: false
+                    show: true
                 },
                 legend: {
                     show: false
@@ -59,9 +77,9 @@ export default {
                             show: false
                         },
                         data: [
-                            { value: 90, name: '正常' },
-                            { value: 4, name: '异常' },
-                            { value: 6, name: '离线' },
+                            { value: 11, name: '正常' },
+                            { value: 8, name: '缺报' },
+                            { value: 10, name: '未到' },
                         ],
                     },
                 ],
@@ -112,6 +130,7 @@ export default {
             var myChart = echarts.init(document.getElementById('barNumChart'));
             // 指定图表的配置项和数据
             var option = {
+                
                 grid: {
                     top: '30',
                     left: '0',
@@ -133,7 +152,7 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
-                    data: ['异常: 5', '离线: 10', '正常: 200'],
+                    data: ['缺报: 8', '未到: 10', '正常: 11'],
                     splitLine: { show: false },
                     axisLine: {
                         show: false
@@ -156,7 +175,7 @@ export default {
                     {
                         name: '数量',
                         type: 'bar',
-                        data: [10, 35, 200],
+                        data: [10, 8, 11],
                         barWidth: 10,
                         smooth: true,
                         label: {
@@ -185,6 +204,7 @@ export default {
                 addDataAnimation: true,         // 动态数据接口是否开启动画效果
                 animationDuration: 3000,
                 animationEasing: 'cubicInOut'
+                
             };
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
@@ -194,7 +214,7 @@ export default {
     },
     mounted() {
         this.getPieChart();
-        this.getBarNumChart();
+        // this.getBarNumChart();
     },
 }
 </script>
@@ -238,5 +258,19 @@ export default {
 .pie-chart {
     left: -10%;
 }
+.sub-content-info .static-bg-ele {
+  margin-top: 10px;
+  background: url(../../assets/static-bg.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 130px;
+  height: 50px;
+}
 
+.static-bg-ele .name {
+  color: #b1eded;
+  font-size: 14px;
+  text-align: center;
+}
 </style>

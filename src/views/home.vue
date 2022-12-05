@@ -2,8 +2,7 @@
     <div class="container" :style="{ 'height': curHeight + 'px' }">
         <!-- 头部模块 -->
         <centerHeader1 />
-        <!-- 工具栏模块 -->
-        <!-- <toolBar class="left-bar"></toolBar> -->
+
         <!-- 左侧菜单模块 -->
         <menu1 :showSign="active" ></menu1>
 
@@ -16,12 +15,12 @@
                         <rightcontent3></rightcontent3>
                     </div>
                     <div style="display:flex;position:relative;width:100%;height: 33%;margin-top: 1%;">
-                        <rightcontent5></rightcontent5>
-                        <rightcontent2></rightcontent2>
+                        <rightcontent6></rightcontent6>
+                        <!-- <rightcontent2></rightcontent2> -->
                     </div>
                     <div style="display:flex;position:relative;width:100%;height: 33%;margin-top: 1%;">
-                        <rightcontent6></rightcontent6>
-                        <rightcontent4></rightcontent4>
+                        <rightcontent7></rightcontent7>
+                    
                     </div>
 
             </div>
@@ -52,13 +51,15 @@
 import bus from '../utils'
 import mapOl1 from '../components/map/mapOl1.vue'
 import centerHeader1 from '../components/header/centerHeader1.vue'
-import toolBar from '../components/map/toolBar.vue'
+// import toolBar from '../components/map/toolBar.vue'
 import rightcontent1 from '../components/subcontent/rightcontent1.vue'
 import rightcontent2 from '../components/subcontent/rightcontent2.vue'
 import rightcontent3 from '../components/subcontent/rightcontent3.vue'
 import rightcontent4 from '../components/subcontent/rightcontent4.vue'
 import rightcontent5 from '../components/subcontent/rightcontent5.vue'
 import rightcontent6 from '../components/subcontent/rightcontent6.vue'
+import rightcontent7 from '../components/subcontent/rightcontent7.vue'
+
 import rightcontentClient1 from '../components/subcontent/rightcontentClient1.vue'
 import rightcontentClient2 from '../components/subcontent/rightcontentClient2.vue'
 import rightcontentClient3 from '../components/subcontent/rightcontentClient3.vue'
@@ -68,13 +69,13 @@ export default {
         menu1,
         mapOl1,
         centerHeader1,
-        toolBar,
         rightcontent1,
         rightcontent2,
         rightcontent3,
         rightcontent4,
         rightcontent5,
         rightcontent6,
+        rightcontent7,
         rightcontentClient1,
         rightcontentClient2,
         rightcontentClient3,

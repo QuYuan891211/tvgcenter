@@ -1,6 +1,6 @@
 <template>
 <div class="sub-content-client2-info">
-    <div class=title>在线统计</div>
+    <div class=title>到报情况</div>
     <div style="display:flex;position:relative">
             <div style="width:40%;margin-left:20px;">
                 <div class="pie-chart" id="pieChartClient" style="width: 262px;height:200px;"></div>

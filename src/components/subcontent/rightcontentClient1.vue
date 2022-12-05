@@ -34,7 +34,7 @@
       </div>
       <div style="position:relative; width:50%;">
         <div class="cube-icon img-bounce">
-          <img src="@/assets/5.png" alt="">
+          <img src="@/assets/file.png" alt="">
         </div>
         <div class="light-bg">
           <img src="@/assets/light-bg.png" alt="">
