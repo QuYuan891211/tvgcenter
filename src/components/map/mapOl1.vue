@@ -1,7 +1,17 @@
 <template>
+    <div class = "left-tool-bar">
+        <div v-for="(item, index) in menus" :key="index" @click="selectMenu(index)">
+                <div class="menus-item" >
+                <div class="map-button">{{ item.title }}</div>>
+                </div>
+        </div>
+        
+        <!-- <div class="map-button" id="panto" @click="moveToChinaSea()"></button> -->
+    </div>
     <div class="wrapper">
         <div class="map" id="olMap"></div>
     </div>
+
 </template>
 <script>
 import { tsThisType } from '@babel/types';
@@ -13,6 +23,11 @@ import bus from '../../utils'
 export default {
     data() {
         return {
+             // 菜单栏数据
+             menus: [
+                { title: '地图复位' },
+
+            ],
             map: null,
             parser: null,
             //map中的图层数组
@@ -203,7 +218,7 @@ export default {
                 //地图视图设置
                 view: new ol.View({
                     //地图初始中心点
-                    center: ol.proj.transform([121.29, 31.14], 'EPSG:4326', 'EPSG:3857'),
+                    center: ol.proj.transform([130, 30], 'EPSG:4326', 'EPSG:3857'),
                     //地图初始显示级别
                     zoom: 5,
                     minZoom:3,
@@ -260,12 +275,38 @@ export default {
             undefinedHTML: "&nbsp;",
         });
             this.map.addControl(mousePositionControl);
-
+            var view = this.map.getView()
+            var zoom = view.getZoom()
+            var center = view.getCenter()
+            var rotation = view .getRotation()
 
             
 
 
         },
+        /**
+         * 地图工具菜单方法集
+         * @param {*} index 
+         */
+        selectMenu(index){
+            switch (index){
+            case 0:
+            this.moveToChinaSea()  // 当表达式的结果等于 0 时，则执行该代码
+             break;
+                
+
+            default :
+            this.moveToChinaSea()  // 如果没有与表达式相同的值，则执行该代码
+}
+        },
+        moveToChinaSea(){
+            //单击平移按钮
+            var view = this.map.getView()
+            var wh = ol.proj.fromLonLat([130,30])
+            view.setCenter(wh)
+            view.setZoom(5)
+            
+            }
     },
 };
 </script>
@@ -279,6 +320,50 @@ export default {
 /* TODO:不起作用 */
 .ol-zoom .ol-zoom-in {
     display:none;
+}
+.left-tool-bar {
+    position: absolute;
+    /* left:0; */
+    top: 100px;
+    z-index: 5;
+    /* pointer-events: none; */
+}
+.left-tool-bar .menus-item {
+    width: 144px;
+    height: 49px;
+    font-size: 18px;
+    line-height: 55px;
+    margin-bottom: 49px;
+    cursor: pointer;
+}
+.left-tool-bar .map-button {
+    background: url(@/assets/no-select.png);
+    background-size: 100%;
+    color: white;
+}
+.TooLib{
+  float:left;
+  position:absolute;
+  bottom: 10px;
+  z-index:2000;
+}
+.ButtonLib{
+        width: 200px; 
+        margin-left: 2px;
+        opacity: 0.8; 
+        padding:8px;  
+        background-color: #428bca;  
+        border-color: #357ebd;  
+        color: #fff;  
+        -moz-border-radius: 10px;  
+        -webkit-border-radius: 10px;  
+        border-radius: 10px; /* future proofing */  
+        -khtml-border-radius: 10px; /* for old Konqueror browsers */  
+        text-align: center;  
+        vertical-align: middle;  
+        border: 1px solid transparent;  
+        font-weight: 900;  
+        font-size:125%  
 }
 
 </style>

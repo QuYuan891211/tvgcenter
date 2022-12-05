@@ -3,7 +3,7 @@
         <!-- 头部模块 -->
         <centerHeader1 />
         <!-- 工具栏模块 -->
-        <!-- <toolBar></toolBar> -->
+        <!-- <toolBar class="left-bar"></toolBar> -->
         <!-- 左侧菜单模块 -->
         <menu1 :showSign="active" ></menu1>
 
