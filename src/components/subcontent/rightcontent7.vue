@@ -127,7 +127,8 @@ export default {
                                 )
                             }
                         },
-                        data: this.data_wind
+                        data: this.data_wind,
+                        
                     }
                 ],
                 tooltip: {

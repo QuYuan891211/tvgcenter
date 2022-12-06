@@ -150,7 +150,7 @@ body {
 }
 
 .right-bar1 {
-    width: 500px;
+    width: 1000px;
     height: 100%;
     position: absolute;
     top: 90px;

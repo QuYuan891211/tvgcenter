@@ -29,14 +29,19 @@ export default {
 
             ],
             map: null,
+            point_icon_style_path:'./static/images/label/icon32.png',
+            point_selected_icon_style_path:'./static/images/label/icon32_selected.png',
             parser: null,
+            select_id:null,
             //map中的图层数组
             layer: new Array(),
             //图层名称数组
             layerName: new Array(),
             //图层可见属性数组
             layerVisibility: new Array(),
-            //客户列表
+            //选中变换的样式
+           
+            //列表
             userList: []
         };
     },
@@ -49,7 +54,7 @@ export default {
             * 创建矢量标注样式函数,设置image为图标ol.style.Icon
             * @param {ol.Feature} feature 要素
             */
-        createLabelStyle(feature) {
+        createLabelStyle(feature, is_selected) {
             return new ol.style.Style({
                 image: new ol.style.Icon(
                     /** @type {olx.style.IconOptions} */
@@ -65,7 +70,8 @@ export default {
                         //透明度
                         opacity: 1,
                         //图标的url
-                        src: './static/images/label/icon32.png'
+                        src: is_selected?this.point_selected_icon_style_path:this.point_icon_style_path
+                        // 
                     })),
                 text: new ol.style.Text({
                     //位置
@@ -97,54 +103,74 @@ export default {
                 name: '新标注'
             });
             //设置要素的样式
-            newFeature.setStyle(this.createLabelStyle(newFeature));
+            newFeature.setStyle(this.createLabelStyle(newFeature,false));
             //将新要素添加到数据源中
             this.vectorSource.addFeature(newFeature);
         },
         initMarker() {
+            
             var shanghai = ol.proj.fromLonLat([121.29, 31.14]);
 
             //矢量标注的数据源
             var vectorSource = new ol.source.Vector({
                 features: []
             });
-
-            for (var i = 0; i < this.userList.length; i++) {
-                var user = this.userList[i];
-                var point = ol.proj.fromLonLat(user.loc);
-                //实例化Vector要素,通过矢量图层添加到地图容器中
-                var iconFeature = new ol.Feature({
-                    geometry: new ol.geom.Point(point),
-                    //名称属性
-                    name: user.name,
-                    //大概人口数（万）
-                    population: 2500
-                });
-                iconFeature.setStyle(this.createLabelStyle(iconFeature));
-                vectorSource.addFeature(iconFeature);
-            }
+            
+            this.initFeature(vectorSource)
 
             //矢量标注图层
             var vectorLayer = new ol.layer.Vector({
-                source: vectorSource
+                source: vectorSource,
+                name:'观测点位矢量图层'
             });
             this.map.addLayer(vectorLayer);
-
+            
             /**
         * 为map添加点击事件监听,渲染弹出popup
         */
             var vm=this;
             this.map.on('click', function (evt) {
+                
+                // vm.map.removeLayer (vm.vectorLayer)
+                // var vs = vm.vectorSource.forEachFeatues()
+                // var features = vm.vectorSource.getFeatures()
+                
+                //     for(var i=0; i< features.length;i++){
+                //         features[i].setStyle(vm.createLabelStyle(feature,false));
+                //     }
                 //判断当前单击处是否有要素,捕获到要素时弹出popup
                 var feature = this.forEachFeatureAtPixel(evt.pixel, function (feature, layer) { return feature; });
                 if (feature) {
+
+                    var layers_collection =  vm.map.getLayers()
+                    var layers_arrays = layers_collection.getArray()
+                    console.log('获取layers长度'+layers_arrays.length)
+                    var target_layer = layers_arrays[2]
+                    // console.log('获取layers长度'+layers_arrays.length)
+                    var source = target_layer.getSource()
+                    var features = source.getFeatures()
+                    // vm.initFeature()
+                    for(var i=0; i< features.length;i++){
+                        features[i].setStyle(vm.createLabelStyle(features[i],false));
+                    }
+                    // var targetLayer = layers.get
+
+
+                    // var sources = layers[2].getSource
+                    // console.log('获取sources长度'+sources.length)
                     //var coor=features[0].getGeometry().getCoordinates();
                     //var property=features[0].getProperties();
                     //var type=features[0].getGeometry().getType();
-                    console.log(feature.getProperties())
+                    // console.log(feature.getStyle.getImage)
                     var name = feature.getProperties().name
+                    
                     vm.updateSelectClientInfo(name)
+                    // vm.initMarker()
+                    feature.setStyle(vm.createLabelStyle(feature,true));
+                    
                 } else {
+                    
+                    //  vm.initMarker()
                      bus.emit('changeActive', {'active':0, 'name':''} );
                 }
             });
@@ -158,9 +184,40 @@ export default {
                 this.getTargetElement().style.cursor = hit ? 'pointer' : '';
             });
         },
+        // before_select(){
+        //     var selectClick = new ol.interaction.Select({
+        //     // 事件类型
+        //     condition: ol.events.condition.click,
+        //     // 点击后的样式
+        //     style: createLabelStyle(feature, false)
+        // })
+        // },
+        
+        
+        // recoveryFeatures(vectorSource){
+        //     this.vectorSource.clear()
+        //     this.initFeature(vectorSource)
+        // },
+        initFeature(vectorSource){
+            // vectorSource.clear
+            for (var i = 0; i < this.userList.length; i++) {
+                var user = this.userList[i];
+                var point = ol.proj.fromLonLat(user.loc);
+                //实例化Vector要素,通过矢量图层添加到地图容器中
+                var iconFeature = new ol.Feature({
+                    geometry: new ol.geom.Point(point),
+                    //名称属性
+                    name: user.name,
+            //  
+                });
+                iconFeature.setStyle(this.createLabelStyle(iconFeature,false));
+                vectorSource.addFeature(iconFeature);
+            }
+        },
+       
         //更新指定用户的数据
         updateSelectClientInfo(name){
-            console.log(name)
+            console.log('选中'+name)
              for (var i = 0; i < this.userList.length; i++) {
                 var user = this.userList[i];
                 if(user.name == name){
@@ -168,6 +225,7 @@ export default {
                     break
                 }
              }
+
         },
         initMap() {
             var TiandiMap_vec = new ol.layer.Tile({
@@ -214,7 +272,7 @@ export default {
                 //地图视图设置
                 view: new ol.View({
                     //地图初始中心点
-                    center: ol.proj.transform([130, 30], 'EPSG:4326', 'EPSG:3857'),
+                    center: ol.proj.transform([130, 27], 'EPSG:4326', 'EPSG:3857'),
                     //地图初始显示级别
                     zoom: 5,
                     minZoom:4,
@@ -298,7 +356,7 @@ export default {
         moveToChinaSea(){
             //单击平移按钮
             var view = this.map.getView()
-            var wh = ol.proj.fromLonLat([130,30])
+            var wh = ol.proj.fromLonLat([130,27])
             view.setCenter(wh)
             view.setZoom(5)
             

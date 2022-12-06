@@ -26,10 +26,10 @@ export default {
         return {
             // 菜单栏数据
             menus: [
-                { title: '实时数据' },
-                { title: '历史数据' },
-                { title: '监测数据' },
-                { title: '分析数据' },
+                { title: '海浪' },
+                { title: '气象' },
+                { title: '海温' },
+                { title: '海冰' },
             ],
             // 激活菜单选项
             active: 1,
