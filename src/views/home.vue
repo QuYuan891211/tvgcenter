@@ -30,13 +30,13 @@
             :style="{ right: rightbarRight + '%', height: (curHeight-100) + 'px' }">
             <div class="right-bar-info">
                 <div style="position:relative;width:100%;height: 33%;">
-                <rightcontentClient1></rightcontentClient1>
-                </div>
-                <div style="position:relative;width:100%;height: 33%;">
-                <rightcontentClient2></rightcontentClient2>
-                </div>
-                <div style="position:relative;width:100%;height: 33%;">
                 <rightcontentClient3></rightcontentClient3>
+                </div>
+                <div style="position:relative;width:100%;height: 33%;">
+                <rightcontentClient4></rightcontentClient4>
+                </div>
+                <div style="position:relative;width:100%;height: 33%;">
+                <rightcontentClient5></rightcontentClient5>
                 </div>
             </div>
         </div>
@@ -63,6 +63,8 @@ import rightcontent7 from '../components/subcontent/rightcontent7.vue'
 import rightcontentClient1 from '../components/subcontent/rightcontentClient1.vue'
 import rightcontentClient2 from '../components/subcontent/rightcontentClient2.vue'
 import rightcontentClient3 from '../components/subcontent/rightcontentClient3.vue'
+import rightcontentClient4 from '../components/subcontent/rightcontentClient4.vue'
+import rightcontentClient5 from '../components/subcontent/rightcontentClient5.vue'
 import menu1 from '../components//menu/menu1.vue'
 export default {
     components: {
@@ -79,6 +81,9 @@ export default {
         rightcontentClient1,
         rightcontentClient2,
         rightcontentClient3,
+        rightcontentClient4,
+        rightcontentClient5
+
     },
     data() {
         return {

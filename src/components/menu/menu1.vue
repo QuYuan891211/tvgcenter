@@ -1,6 +1,6 @@
 <template>
     <!-- 弹窗 -->
-    <div v-show="showSign === 1" class="left-bar" v-bind:class="{ toLeft: leftActive, toRight: rightActive }"
+    <div v-show="(showSign === 0)" class="left-bar" v-bind:class="{ toLeft: leftActive, toRight: rightActive }"
         :style="{ left: leftbarLeft + '%' }">
         <img class="menu-cover" src="@/assets/nav_bg.png" alt="" />
         <div class="menus-bar">
@@ -26,13 +26,13 @@ export default {
         return {
             // 菜单栏数据
             menus: [
-                { title: '海浪' },
-                { title: '气象' },
-                { title: '海温' },
-                { title: '海冰' },
+                { title: '浮标' },
+                { title: '海洋站' },
+                { title: '志愿船' },
+                { title: '其它' },
             ],
             // 激活菜单选项
-            active: 1,
+            active: 0,
             topBarTop: -8,
             leftbarLeft: 0,
             rightbarRight: -20,
@@ -86,7 +86,7 @@ export default {
 
 .menus-bar {
     position: absolute;
-    top: 247px;
+    top: 230px;
     left: 24px;
     color: #8cfeff;
 }

@@ -3,7 +3,7 @@
         <div class="top-bar-left d-flex j-end a-center">
             <!-- <img src="@/assets/top_title.png" alt=""> -->
             <img class="logo" src="@/assets/nmefclogo.png" alt="">
-            <text class="title">海洋观测数字化平台</text>
+            <text class="title">海洋观测系统数字化平台</text>
         </div>
         <div class="top-bar-right d-flex j-end a-center">
             <div class="time">{{ curTime }}</div>
