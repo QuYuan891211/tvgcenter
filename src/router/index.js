@@ -5,7 +5,7 @@ const routes = [
     path: '/',
     component: () => import('../views/home.vue'),
     meta:{
-      title:"海洋观测数字化平台"
+      title:"海洋观测系统数字化平台"
     }
   },
 ];

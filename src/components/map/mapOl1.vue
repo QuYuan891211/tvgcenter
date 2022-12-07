@@ -42,7 +42,9 @@ export default {
             //选中变换的样式
            
             //列表
-            userList: []
+            userList: [
+
+]
         };
     },
     mounted() {
@@ -144,7 +146,7 @@ export default {
 
                     var layers_collection =  vm.map.getLayers()
                     var layers_arrays = layers_collection.getArray()
-                    console.log('获取layers长度'+layers_arrays.length)
+                    // console.log('获取layers长度'+layers_arrays.length)
                     var target_layer = layers_arrays[2]
                     // console.log('获取layers长度'+layers_arrays.length)
                     var source = target_layer.getSource()

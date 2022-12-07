@@ -1,96 +1,32 @@
 <template>
     <!-- 学校基本信息 -->
     <div class="sub-content-client3-info">
-        <div class=title>自定义时间</div>
-        <!-- 搜索条件form -->
-        <div class="search-bar">
-            <div class="search-bar-div">
-            <select class="search-bar-select">
-
-                <option value ="volvo">有效波高</option>
-
-                <option value ="saab">最大波高</option>
-
-                <option value="opel">最大风速</option>
-
-                <option value="audi">平均风速</option>
-
-            </select>
-        </div>
-        <div class="search-bar-div">
-            <select class="search-bar-select">
-
-                <option value ="volvo">2022-11-17 09</option>
-
-                <option value ="saab">最大波高</option>
-
-                <option value="opel">最大风速</option>
-
-                <option value="audi">平均风速</option>
-
-            </select>
-        </div>
-
-        <div class="search-bar-div">
-            <select class="search-bar-select">
-
-                <option value ="volvo">2022-11-18 08</option>
-
-                <option value ="saab">最大波高</option>
-
-                <option value="opel">最大风速</option>
-
-                <option value="audi">平均风速</option>
-
-            </select>
-        </div>
-        <div class="search-bar-div">
-            <button type="button" class="search-button">查询</button>
-        </div>
-        </div>
+        <div class=title>最近7天</div>
         <div class="attend" style="padding-left: 10px;">
-            <div class="line-chart" id="lineChartClient_24" style="width:950px;height:180px;margin-left:2%"></div>
+            <div class="line-chart" id="lineChartClient_7" style="width: 950px;height:210px;margin-left:2%"></div>
         </div>
     </div>
 </template>
 <script>
 export default {
-    name: 'subContent5',
+    name: 'subContent6',
     data() {
         return {
-            //观测数据信息
-            data_arr_24:null,
+                        //观测数据信息
+            data_arr_7:null,
             data_arr:null,
             unit:null,
-            name_ele:null
+            name_ele:null,
+
         }
     },
     methods: {
-        createDateList(days) {
-
-
-            let endTime = new Date()
-            let startTime = new Date(Date.parse(endTime) - days * 24 * 60 * 60 * 1000)
-            let dateList = []
-            let i = 0
-            while ((endTime.getTime() - startTime.getTime()) >= 0) {
-                let year = startTime.getFullYear()
-                let month = startTime.getMonth() + 1
-                let day = startTime.getDate()
-                dateList[i] = year + '-' +
-                            (month > 9 ? month : '0' + month) + '-' +
-                            (day > 9 ? day : '0' + day)
-                startTime.setDate(startTime.getDate() + 1)
-                i++
-            }
-    return dateList.reverse()
-    },
-
+        // 取的学生考勤率曲线图数据
         getLineChart() {
             //直接引用进来使用
             var echarts = require('echarts');
             // 基于准备好的dom，获取main节点init初始化echarts实例
-            var myChart = echarts.init(document.getElementById('lineChartClient_24'));
+            var myChart = echarts.init(document.getElementById('lineChartClient_7'));
             // 指定图表的配置项和数据
             var option = {
                 title: {
@@ -126,13 +62,13 @@ export default {
                                 color: '#FFFFFF',
                             },
                         },
-                        data:this.data_arr_24
+                        data:this.data_arr_7
                     }
                 ],
                 yAxis: [
                     {
                         type: 'value',
-                        splitLine: { show: true,  lineStyle:{opacity:0.5,type: 'dashed'}},
+                        splitLine:{ show: true,  lineStyle:{opacity:0.5,type: 'dashed'}},
                         axisLabel: {
                             textStyle: {
                                 color: '#FFFFFF',
@@ -142,7 +78,7 @@ export default {
                 ],
                 series: [
                     {
-                        name: this.name_ele,
+                        name: this.name,
                         type: 'line',
                         stack: '总量',
                         areaStyle: {
@@ -188,14 +124,15 @@ export default {
         }
     },
     mounted() {
-        this.data_arr_24 = [1,2,3]
-        this.data_arr = [1,2,3]
-        console.log(this.data_arr_24)
-        console.log(this.data_arr)
+        this.data_arr_7 = [1,2,3]
+        var plus = new Array(16).fill(0)
+        var ture = [1,2,3]
+        this.data_arr = plus.concat(ture)
+        console.log(this.data_arr_7.length)
+        console.log(this.data_arr.length)
         this.unit = '米'
         this.name_ele = '有效波高'
-        console.log(this.data_arr_24.length)
-        console.log(this.data_arr.length)
+        // this.getLineChart();
         this.getLineChart();
     },
 }
@@ -235,37 +172,7 @@ export default {
     background-color: #528693;
     width: 100%;
 }
-.search-bar{
-    display: flex;
-    flex-direction: row;
-    flex-wrap:nowrap;
-    justify-content:start;
-    margin-left: 5%;
 
-}
-.search-bar-div{
-      margin-right: 2%;  
-    }
-.search-bar-select{
-    width:150px;
-    height: 30px;
-}
-
-.search-bar-select{
-    width:150px;
-    height: 30px;
-}
-.search-button{
-    width:150px;
-    height: 30px;
-    font-size: 18px;
-    color:white;
-    background: #ea9218;
-    background-size: 100%;
-    font-family: "微软雅黑";
-    border-radius: 10px
-    /* color: #ece847; */
-}
 .sub-content-client3-info .attend .attention-icon img {
     width: 27px;
     height: 27px;
