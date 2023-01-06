@@ -19,7 +19,7 @@ import { tsThisType } from '@babel/types';
 import bus from '../../utils'
 // import MousePosition from "ol/control/MousePosition";
 // import { format } from "ol/coordinate";
-
+// const axios = require('axios');  
 export default {
     data() {
         return {
@@ -41,15 +41,15 @@ export default {
             layerVisibility: new Array(),
             //选中变换的样式
            
-            //列表
-            userList: [
-
-]
+            //列表,在加载时导入[]
+            buoyList: []
         };
     },
     mounted() {
+        // this.initBuoyData();
         this.initMap();
         this.initMarker();
+        
     },
     methods: {
         /**
@@ -109,6 +109,7 @@ export default {
             //将新要素添加到数据源中
             this.vectorSource.addFeature(newFeature);
         },
+        
         initMarker() {
             
             var shanghai = ol.proj.fromLonLat([121.29, 31.14]);
@@ -200,28 +201,51 @@ export default {
         //     this.vectorSource.clear()
         //     this.initFeature(vectorSource)
         // },
-        initFeature(vectorSource){
-            // vectorSource.clear
-            for (var i = 0; i < this.userList.length; i++) {
-                var user = this.userList[i];
-                var point = ol.proj.fromLonLat(user.loc);
-                //实例化Vector要素,通过矢量图层添加到地图容器中
-                var iconFeature = new ol.Feature({
-                    geometry: new ol.geom.Point(point),
-                    //名称属性
-                    name: user.name,
+        initBuoyData(){
+
+
+
+        },
+        async initFeature(vectorSource){
+            axios(
+                {method: 'get',//提交方法
+            url: 'http://localhost:8081/config/all',//提交地址
+            params: {}}).then((res) => {
+                if(100 == res.data.commonResultCode.code){
+                    this.buoyList = res.data.observeConfigList
+                    alert(this.buoyList[0].name)
+                    // alert(this.buoyList[0].lat)
+
+                // vectorSource.clear
+                for (var i = 0; i < this.buoyList.length; i++) {
+                    var user = this.buoyList[i];
+                    var loc = [user.lon, user.lat]
+                    
+                    var point = ol.proj.fromLonLat(loc);
+                    //实例化Vector要素,通过矢量图层添加到地图容器中
+                    var iconFeature = new ol.Feature({
+                        geometry: new ol.geom.Point(point),
+                        //名称属性
+                        name: user.name,
+
             //  
                 });
                 iconFeature.setStyle(this.createLabelStyle(iconFeature,false));
                 vectorSource.addFeature(iconFeature);
             }
+        }else{
+                    alert(res.data.commonResultCode.message)
+                }
+                // console.log(res。commonResultCode);
+                // alert(res.data.observeConfigList)
+            })
         },
        
         //更新指定用户的数据
         updateSelectClientInfo(name){
             console.log('选中'+name)
-             for (var i = 0; i < this.userList.length; i++) {
-                var user = this.userList[i];
+             for (var i = 0; i < this.buoyList.length; i++) {
+                var user = this.buoyList[i];
                 if(user.name == name){
                     bus.emit('changeActive', {'active':1, 'name':name} );
                     break
