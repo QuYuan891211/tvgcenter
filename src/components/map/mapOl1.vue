@@ -213,7 +213,7 @@ export default {
             params: {}}).then((res) => {
                 if(100 == res.data.commonResultCode.code){
                     this.buoyList = res.data.observeConfigList
-                    alert(this.buoyList[0].name)
+                    // alert(this.buoyList[0].name)
                     // alert(this.buoyList[0].lat)
 
                 // vectorSource.clear
