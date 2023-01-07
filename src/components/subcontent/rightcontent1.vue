@@ -2,10 +2,10 @@
 <div class="sub-content-info">
     <div class=title>数据到报与要素统计</div>
     <div style="display:flex;position:relative">
-            <div style="width:40%;margin-left:-8%">
+            <div style="width:40%;margin-left:2%">
                 <div class="pie-chart" id="pieChart" style="width: 262px;height:180px;"></div>
             </div>
-            <div  style="width:0%;margin-left:25%">
+            <div  style="width:0%;margin-left:15%">
                 <!-- <div class="barnum-chart" id="barNumChart" style="width: 100px;height:164px;"></div> -->
                 <div class="static-list">
         

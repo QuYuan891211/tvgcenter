@@ -147,7 +147,7 @@ body {
 
 /* 右边样式 */
 .right-bar {
-    width: 800px;
+    width: 1000px;
     position: absolute;
     top: 90px;
     background: url(../assets/right-cover.png);
