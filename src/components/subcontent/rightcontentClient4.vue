@@ -8,15 +8,24 @@
     </div>
 </template>
 <script>
+import bus from '../../utils'
+import common from '../../assets/js/common'
 export default {
     name: 'subContent6',
     data() {
         return {
-                        //观测数据信息
-            data_arr_7:null,
-            data_arr:null,
+            //请求地址
+            url_last_single_data:'http://localhost:8081/buoy/lastSingle',
+            //观测数据信息
+            data_arr_7:[],
+            time_arr_7:[],
             unit:null,
             name_ele:null,
+            default_time : 7,
+            selected_name:null,
+            all_ele_data_7:null,
+            // date_format_str: 'dd HH',
+            default_ele : '有效波高'//有效波高
 
         }
     },
@@ -62,7 +71,7 @@ export default {
                                 color: '#FFFFFF',
                             },
                         },
-                        data:this.data_arr_7
+                        data:this.time_arr_7
                     }
                 ],
                 yAxis: [
@@ -78,7 +87,7 @@ export default {
                 ],
                 series: [
                     {
-                        name: this.name,
+                        name: this.name_ele,
                         type: 'line',
                         stack: '总量',
                         areaStyle: {
@@ -108,7 +117,7 @@ export default {
                                 }
                             }
                         },
-                        data: this.data_arr
+                        data: this.data_arr_7
                     },
                 ],
                 animation: true,
@@ -124,15 +133,76 @@ export default {
         }
     },
     mounted() {
-        this.data_arr_7 = [1,2,3]
-        var plus = new Array(16).fill(0)
-        var ture = [1,2,3]
-        this.data_arr = plus.concat(ture)
-        console.log(this.data_arr_7.length)
-        console.log(this.data_arr.length)
-        this.unit = '米'
-        this.name_ele = '有效波高'
-        // this.getLineChart();
+         // console.log('子组件加载')
+        //来自地图的鼠标点击Feature选中事件
+        // bus.off('select_feature')
+        bus.on('select_feature', val =>{
+            // alert('client4')
+            this.selected_name = val
+            // var t = new Date().getTime();
+            // alert('client3监听到选中 ' + this.selected_name)
+             //发送请求，获取选中浮标的最近1天数据
+             axios(
+                {
+            method: 'get',//提交方法
+            url: this.url_last_single_data,//提交地址
+            params: {//提交参数
+                
+                days:this.default_time,
+                name:this.selected_name
+                // timestamp:t
+            }}).then((res) => {
+                // console.log('30天' + res.data.buoyDataList[0].site)
+                // this.initLineChart()
+                if("100" == res.data.commonResultCode.code){
+                    this.all_ele_data_7 = res.data.buoyDataList
+                    //清空数组
+                    this.data_arr_7=[]
+                        // alert(item.queryTime)
+                    this.time_arr_7=[]
+                    // alert('1天全要素' + res.data.buoyDataList[0].queryTime)
+                    // alert('all_ele_data_7 长度' + this.all_ele_data_7.length)
+                    // alert('all_ele_data_7 时间' + this.all_ele_data_7[0].queryTime) 
+                    for(var i=0;i<this.all_ele_data_7.length;i++){
+                        // common.text()
+                       
+                        // this.data_arr_7 = this.all_ele_data_7
+                        this.data_arr_7.push(common.getSigleEleValue(this.default_ele, this.all_ele_data_7[i]))
+                        // alert(item.queryTime)
+                        this.time_arr_7.push(this.all_ele_data_7[i].queryTime)
+                        // alert('时间' + item.queryTime)
+                    }
+                    this.name_ele = this.default_ele
+                    // 重新加载图表
+                    this.getLineChart();
+                    // alert('time '+this.time_arr_7[0])
+                    // alert(this.time_arr_7.length)
+                    // alert('data ' + this.data_arr_7[0])
+                    // alert(this.data_arr_7.length)
+                    
+                    // bus.emit('lastAll', this.last_all_data);
+                }else if("400" == res.data.commonResultCode.code){
+                     alert(res.data.commonResultCode.message)
+                }else if("500" == res.data.commonResultCode.code){
+                    
+                }
+
+            })
+            // console.log(val)
+            // this.selected_name = val
+            // console.log('client3监听')
+            // console.log('子组件Client3使用公共事务mitt获取的所选Feature: ' + val[0].site + '数据长度： ' + val.length)
+            
+        })
+        this.data_arr_7 = []
+
+        // console.log(this.data_arr_7)
+        // console.log(this.data_arr)
+        //TODO:动态获取单位
+        this.unit = ''
+        // this.name_ele = '有效波高'
+        // console.log(this.data_arr_7.length)
+        // console.log(this.data_arr.length)
         this.getLineChart();
     },
 }
