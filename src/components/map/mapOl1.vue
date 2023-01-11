@@ -19,7 +19,7 @@ import { tsThisType } from '@babel/types';
 import bus from '../../utils'
 // import MousePosition from "ol/control/MousePosition";
 // import { format } from "ol/coordinate";
-// const axios = require('axios');  
+
 export default {
     data() {
         return {
@@ -28,6 +28,7 @@ export default {
                 { title: '地图复位' },
 
             ],
+            url_load_config : 'http://localhost:8081/config/all',
             map: null,
             point_icon_style_path:'./static/images/label/icon32.png',
             point_selected_icon_style_path:'./static/images/label/icon32_selected.png',
@@ -43,6 +44,7 @@ export default {
            
             //列表,在加载时导入[]
             buoyList: []
+            // selected_name : null
         };
     },
     mounted() {
@@ -166,7 +168,12 @@ export default {
                     //var type=features[0].getGeometry().getType();
                     // console.log(feature.getStyle.getImage)
                     var name = feature.getProperties().name
-                    
+                    // vm.selected_name = name
+                    //向公共组件传选择的名称
+                    // vm.sendSelectedNameToFa(name)
+                    bus.emit('select_feature', name );
+                    // bus.emit('select_feature_7', name );
+                    // bus.emit('select_feature_30', name );
                     vm.updateSelectClientInfo(name)
                     // vm.initMarker()
                     feature.setStyle(vm.createLabelStyle(feature,true));
@@ -201,15 +208,15 @@ export default {
         //     this.vectorSource.clear()
         //     this.initFeature(vectorSource)
         // },
-        initBuoyData(){
+        sendSelectedNameToFa(name){
 
-
+            this.$emit("getSelectedNameByCh",name)
 
         },
-        async initFeature(vectorSource){
+        initFeature(vectorSource){
             axios(
                 {method: 'get',//提交方法
-            url: 'http://localhost:8081/config/all',//提交地址
+            url: this.url_load_config,//提交地址
             params: {}}).then((res) => {
                 if(100 == res.data.commonResultCode.code){
                     this.buoyList = res.data.observeConfigList
@@ -243,7 +250,7 @@ export default {
        
         //更新指定用户的数据
         updateSelectClientInfo(name){
-            console.log('选中'+name)
+            // console.log('选中'+name)
              for (var i = 0; i < this.buoyList.length; i++) {
                 var user = this.buoyList[i];
                 if(user.name == name){
@@ -306,19 +313,7 @@ export default {
 
 
                 }),
-                //TODO:复位经纬度需要核对
-                // controls: ol.control.defaults().extend([
-                //  new ol.control.ZoomToExtent({
-                //     label: 'E',
-                //     tipLabel:'地图复位到中国海区',
-                //     extent: [
-                //     10500000, 40,
-                //     14500000, 4500000
-                //     ],
-                //     // overviewMapControl
-                // }),
 
-                // ]),bar
 
             });
 

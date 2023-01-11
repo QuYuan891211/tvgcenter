@@ -30,19 +30,19 @@
             :style="{ right: rightbarRight + '%', height: (curHeight-100) + 'px' }">
             <div class="right-bar-info">
                 <div style="position:relative;width:100%;height: 33%;">
-                <rightcontentClient3></rightcontentClient3>
+                <rightcontentClient3 :key = "timer" ></rightcontentClient3>
                 </div>
                 <div style="position:relative;width:100%;height: 33%;">
-                <rightcontentClient4></rightcontentClient4>
+                <rightcontentClient4 :key = "timer"></rightcontentClient4>
                 </div>
                 <div style="position:relative;width:100%;height: 33%;">
-                <rightcontentClient5></rightcontentClient5>
+                <rightcontentClient5 :key = "timer"></rightcontentClient5>
                 </div>
             </div>
         </div>
         <!-- 地图模块 -->
         <div id="iframe-map">
-            <mapOl1></mapOl1>
+            <mapOl1 @getSelectedNameByCh = "getSelectedNameByCh"></mapOl1>
         </div>
     </div>
 </template>
@@ -66,6 +66,7 @@ import rightcontentClient3 from '../components/subcontent/rightcontentClient3.vu
 import rightcontentClient4 from '../components/subcontent/rightcontentClient4.vue'
 import rightcontentClient5 from '../components/subcontent/rightcontentClient5.vue'
 import menu1 from '../components//menu/menu1.vue'
+// import { Console } from 'console'
 export default {
     components: {
         menu1,
@@ -87,6 +88,8 @@ export default {
     },
     data() {
         return {
+            url_last_data : 'http://localhost:8081/buoy/lastAll',
+
             curHeight: document.documentElement.clientHeight, // 屏幕高度
             curWidth: document.documentElement.clientWidth, // 屏幕尺寸
             //screenWidth: document.body.clientWidth, // 屏幕尺寸
@@ -95,6 +98,11 @@ export default {
             leftbarLeft: -9,
             active: 0,
             selectMenu:0, //当前选择的左侧菜单
+            selected_name:null,//子组件map传所选中的点的name
+            default_time:30,
+            last_all_data:null,
+            
+            timer:''
         }
     },
     created() {
@@ -103,9 +111,39 @@ export default {
     methods: {
         updateActive(e) {   //声明这个函数
             this.active = e;
-        }
+        },
+        //使用公共事务控制代替此方法
+        // getSelectedNameByCh(name){
+        //     this.selected_name = name
+        //     console.log('从子组件传来'+ this.selected_name)
+        // }
+        //
+        getLastMonthData(){
+
+                        //发送请求，获取选中浮标的最近30天数据
+                                axios(
+                {
+            method: 'get',//提交方法
+            url: this.url_last_data,//提交地址
+            params: {//提交参数
+                // name:this.selected_name,
+                days:this.default_time
+            }}).then((res) => {
+                // console.log('30天' + res.data.buoyDataList[0].site)
+                // this.initLineChart()
+                if(100 == res.data.commonResultCode.code){
+                    this.last_all_data = res.data.buoyDataList
+                    bus.emit('lastAll', this.last_all_data);
+                }else{
+                    alert(res.data.commonResultCode.message)
+                }
+
+            })
+        },
+
     },
     mounted() {
+        this.getLastMonthData()
         //来自地图图标点击事件
         bus.off('changeActive')
         bus.on('changeActive', val => {
@@ -118,6 +156,18 @@ export default {
             this.selectMenu = val.index
             console.log('selectMenu = '+val.index)
         })
+        //来自地图的鼠标点击Feature选中事件
+        // bus.off('select_feature')
+        // bus.on('select_feature', val =>{
+        //     this.selected_name = val
+
+        //     //重新加载子组件
+        //     // this.timer = new Date().getTime()
+        //     // console.log(this.timer)
+        //     var select_data = this.last_all_data.filter(item => item.site === this.selected_name);
+        //     bus.emit('select_data', select_data)
+        //     console.log('父组件使用公共事务mitt获取的所选Feature: ' + this.selected_name)
+        // })
     }
 }
 </script>

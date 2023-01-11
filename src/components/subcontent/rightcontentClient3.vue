@@ -1,11 +1,13 @@
 <template>
     <!-- 学校基本信息 -->
     <div class="sub-content-client3-info">
-        <div class=title>自定义时间</div>
+        <div class=title>最近24小时</div>
         <!-- 搜索条件form -->
         <div class="search-bar">
-            <div class="search-bar-div">
-            <select class="search-bar-select">
+            <!-- <div>自定义查询</div> -->
+            <div class="switch-bar-div">
+                <!-- <div class="switch-bar-tips">切换要素</div> -->
+            <select class="switch-bar-select">
 
                 <option value ="volvo">有效波高</option>
 
@@ -45,8 +47,9 @@
             </select>
         </div>
         <div class="search-bar-div">
-            <button type="button" class="search-button">查询</button>
+            <button type="button" class="search-button">自定义时间查询</button>
         </div>
+
         </div>
         <div class="attend" style="padding-left: 10px;">
             <div class="line-chart" id="lineChartClient_24" style="width:950px;height:180px;margin-left:2%"></div>
@@ -54,17 +57,34 @@
     </div>
 </template>
 <script>
+import bus from '../../utils'
+import common from '../../assets/js/common'
 export default {
     name: 'subContent5',
     data() {
         return {
+            //请求地址
+            url_last_single_data:'http://localhost:8081/buoy/lastSingle',
             //观测数据信息
-            data_arr_24:null,
-            data_arr:null,
+            data_arr_24:[],
+            time_arr_24:[],
             unit:null,
-            name_ele:null
+            name_ele:null,
+            default_time : 1,
+            selected_name:null,
+            all_ele_data_24:null,
+            // date_format_str: 'dd HH',
+            default_ele : '有效波高'//有效波高
+
+
         }
     },
+    created () {
+        // console.log('重新加载Client3')
+    },
+    // props:
+    //     ['selected_name']
+    // ,
     methods: {
         createDateList(days) {
 
@@ -85,8 +105,25 @@ export default {
             }
     return dateList.reverse()
     },
+    
+        getLineChart(){
+            // // alert(this.selected_name)
+            // //发送请求，获取选中浮标的最近24H，7天，30天数据
+            //                     axios(
+            //     {
+            // method: 'get',//提交方法
+            // url: this.url_last_single_data,//提交地址
+            // params: {//提交参数
+            //     name:this.selected_name,
+            //     days:this.defalut_time
+            // }}).then((res) => {
 
-        getLineChart() {
+            //     this.initLineChart()
+            // })
+            this.initLineChart()
+        },
+        initLineChart() {
+            
             //直接引用进来使用
             var echarts = require('echarts');
             // 基于准备好的dom，获取main节点init初始化echarts实例
@@ -126,7 +163,7 @@ export default {
                                 color: '#FFFFFF',
                             },
                         },
-                        data:this.data_arr_24
+                        data:this.time_arr_24
                     }
                 ],
                 yAxis: [
@@ -172,7 +209,7 @@ export default {
                                 }
                             }
                         },
-                        data: this.data_arr
+                        data: this.data_arr_24
                     },
                 ],
                 animation: true,
@@ -188,17 +225,115 @@ export default {
         }
     },
     mounted() {
-        this.data_arr_24 = [1,2,3]
-        this.data_arr = [1,2,3]
-        console.log(this.data_arr_24)
-        console.log(this.data_arr)
-        this.unit = '米'
-        this.name_ele = '有效波高'
-        console.log(this.data_arr_24.length)
-        console.log(this.data_arr.length)
+        // console.log('子组件加载')
+        //来自地图的鼠标点击Feature选中事件
+        // bus.off('select_feature')
+        bus.on('select_feature', val =>{
+            alert('client3')
+            this.selected_name = val
+            // var t = new Date().getTime();
+            // alert('client3监听到选中 ' + this.selected_name)
+             //发送请求，获取选中浮标的最近1天数据
+             axios(
+                {
+            method: 'get',//提交方法
+            url: this.url_last_single_data,//提交地址
+            params: {//提交参数
+                
+                days:this.default_time,
+                name:this.selected_name,
+                // timeStamp:t
+            }}).then((res) => {
+                // console.log('30天' + res.data.buoyDataList[0].site)
+                // this.initLineChart()
+                if("100" == res.data.commonResultCode.code){
+                    this.all_ele_data_24 = res.data.buoyDataList
+                    //清空数组
+                    this.data_arr_24=[]
+                        // alert(item.queryTime)
+                    this.time_arr_24=[]
+                    // alert('1天全要素' + res.data.buoyDataList[0].queryTime)
+                    // alert('all_ele_data_24 长度' + this.all_ele_data_24.length)
+                    // alert('all_ele_data_24 时间' + this.all_ele_data_24[0].queryTime) 
+                    for(var i=0;i<this.all_ele_data_24.length;i++){
+                        // common.text()
+                       
+                        // this.data_arr_24 = this.all_ele_data_24
+                        this.data_arr_24.push(common.getSigleEleValue(this.default_ele, this.all_ele_data_24[i]))
+                        // alert(item.queryTime)
+                        this.time_arr_24.push(this.all_ele_data_24[i].queryTime)
+                        // alert('时间' + item.queryTime)
+                    }
+                    this.name_ele = this.default_ele
+                    // 重新加载图表
+                    this.getLineChart();
+                    // alert('time '+this.time_arr_24[0])
+                    // alert(this.time_arr_24.length)
+                    // alert('data ' + this.data_arr_24[0])
+                    // alert(this.data_arr_24.length)
+                    
+                    // bus.emit('lastAll', this.last_all_data);
+                }else if("400" == res.data.commonResultCode.code){
+                     alert(res.data.commonResultCode.message)
+                }else if("500" == res.data.commonResultCode.code){
+                    
+                }
+
+            })
+            // console.log(val)
+            // this.selected_name = val
+            // console.log('client3监听')
+            // console.log('子组件Client3使用公共事务mitt获取的所选Feature: ' + val[0].site + '数据长度： ' + val.length)
+            
+        })
+        this.data_arr_24 = []
+
+        // console.log(this.data_arr_24)
+        // console.log(this.data_arr)
+        //TODO:动态获取单位
+        this.unit = ''
+        // this.name_ele = '有效波高'
+        // console.log(this.data_arr_24.length)
+        // console.log(this.data_arr.length)
         this.getLineChart();
     },
+    watch:{
+
+    }
+
 }
+//日期转换字符串
+/**
+ * 函数描述：时间格式化工具
+ * @param format {String} 格式（y-年，M-月，d-日，H-时[24]，h-时[12]，m-分，s-秒，S-毫秒(3位数)，q-季度，ap，午前am/午后pm）
+ * @returns {String}
+ */
+ Date.prototype.format = function (format) {
+    var o = {
+        'M+': this.getMonth() + 1, // 月份
+        'd+': this.getDate(), // 日
+        'H+': this.getHours(), // 时（24小时制）
+        'h+': this.getHours() % 12 === 0 ? 12 : this.getHours() % 12, // 时（12小时制）
+        'm+': this.getMinutes(), // 分
+        's+': this.getSeconds(), // 秒
+        'q+': Math.floor((this.getMonth() + 3) / 3), // 季度
+        'S': this.getMilliseconds(), // 毫秒
+        'ap': this.getHours() > 12 ? 'am' : 'pm'
+    };
+    var week = ['日', '一', '二', '三', '四', '五', '六'];
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    if (/(E+)/.test(format)) {
+        format = format.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? '星期' : '周') : '') + week[this.getDay()]);
+    }
+    for (var k in o) {
+        if (new RegExp('(' + k + ')').test(format)) {
+            format = format.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
+        }
+    }
+    return format;
+};
 </script>
 <style>
 .sub-content-client3-info{
@@ -209,8 +344,20 @@ export default {
     /* 背景图垂直、水平均居中 */
     background-size:100% 100%;
 }
+.switch-bar-div{
+    display: flex;
+    flex-direction: row;
+    margin-right: 35%;
+}
+.switch-bar-tips{
+    color: white;
+    margin-right: 8%;
 
-
+}
+.switch-bar-select{
+    width:100px;
+    height: 30px;
+}
 .sub-content-client3-info .title {
     font-family: SourceHanSansCN-Bold;
     font-size: 18px;
@@ -249,6 +396,7 @@ export default {
 .search-bar-select{
     width:150px;
     height: 30px;
+    
 }
 
 .search-bar-select{
@@ -258,7 +406,7 @@ export default {
 .search-button{
     width:150px;
     height: 30px;
-    font-size: 18px;
+    font-size: 16px;
     color:white;
     background: #ea9218;
     background-size: 100%;
