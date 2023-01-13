@@ -30,23 +30,17 @@
         </div>
 
         <div class="search-bar-div">
-            <select class="search-bar-select">
+            <!-- <input type="text" class="easyui-datetimebox" id="datetime"> -->
 
-                <option value ="volvo">2022-11-18 08</option>
 
-                <option value ="saab">最大波高</option>
-
-                <option value="opel">最大风速</option>
-
-                <option value="audi">平均风速</option>
-
-            </select>
         </div>
         <div class="search-bar-div">
-            <!-- <el-button>测试</el-button> -->
+            <el-button>测试</el-button>
+
+            <el-button type="warning">Warning</el-button>
             <!-- <n-button>naive-ui</n-button> -->
             <!-- <a-button>Add</a-button> -->
-            <!-- <nut-button class="search-button" :loading="isLoading" type="warning" @click="query">自定义时间查询</nut-button> -->
+            <nut-button class="search-button" :loading="isLoading" type="warning" @click="query">自定义时间查询</nut-button>
             <!-- <el-button type="primary">Primary</el-button> -->
             <!-- <v-md-date-range-picker></v-md-date-range-picker> -->
         </div>
@@ -56,7 +50,9 @@
         </div>
     </div>
 </template>
+
 <script>
+
 // import { ref } from 'vue';
 // import { Datepicker, Timepicker, DatetimePicker, DateRangePicker } from '@livelybone/vue-datepicker';
 import bus from '../../utils'

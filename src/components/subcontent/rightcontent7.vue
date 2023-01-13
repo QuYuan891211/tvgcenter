@@ -2,7 +2,7 @@
     <!-- 学校基本信息 -->
     <div class="sub-content-info">
         <div class="title">海区最大平均风速</div>
-        <div class="time">2022年11月18日08时</div>
+        <!-- <div class="time">2022年11月18日08时</div> -->
         <div>
             <div ref="Echarts7" id="barChart_wind" style="width: 100%;height:210px;"></div>
         </div>

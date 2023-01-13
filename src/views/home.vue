@@ -49,6 +49,7 @@
 
 <script>
 import bus from '../utils'
+// import {ElButton} from 'element-plus'
 import mapOl1 from '../components/map/mapOl1.vue'
 import centerHeader1 from '../components/header/centerHeader1.vue'
 // import toolBar from '../components/map/toolBar.vue'
@@ -69,6 +70,7 @@ import menu1 from '../components//menu/menu1.vue'
 // import { Console } from 'console'
 export default {
     components: {
+        
         menu1,
         mapOl1,
         centerHeader1,

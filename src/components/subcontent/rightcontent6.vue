@@ -3,7 +3,7 @@
     <div class="sub-content-info">
         <!-- TODO:标题和时间放到同一行 -->
         <div class="title">海区最大有效波高</div>
-        <div class="time">2022年11月18日08时</div>
+        <!-- <div class="time">2022年11月18日08时</div> -->
         <div>
             <div ref="Echarts6" id="barChart" style="width: 100%;height:210px;"></div>
         </div>
