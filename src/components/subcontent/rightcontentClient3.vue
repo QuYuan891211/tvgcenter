@@ -7,18 +7,14 @@
             <!-- <div>自定义查询</div> -->
             <div class="switch-bar-div">
                 <!-- <div class="switch-bar-tips">切换要素</div> -->
-            <select class="switch-bar-select">
+            <select class="switch-bar-select" v-model="this.selected_ele" @change="changeElement">
 
-                <option value ="volvo">有效波高</option>
+                <option v-for="option in ele_list" v-bind:value="option.name">{{option.name}}</option>
 
-                <option value ="saab">最大波高</option>
-
-                <option value="opel">最大风速</option>
-
-                <option value="audi">平均风速</option>
 
             </select>
         </div>
+        
         <div class="search-bar-div">
             <select class="search-bar-select">
 
@@ -47,20 +43,54 @@
             </select>
         </div>
         <div class="search-bar-div">
-            <button type="button" class="search-button">自定义时间查询</button>
+            <!-- <el-button>测试</el-button> -->
+            <!-- <n-button>naive-ui</n-button> -->
+            <!-- <a-button>Add</a-button> -->
+            <!-- <nut-button class="search-button" :loading="isLoading" type="warning" @click="query">自定义时间查询</nut-button> -->
+            <!-- <el-button type="primary">Primary</el-button> -->
+            <!-- <v-md-date-range-picker></v-md-date-range-picker> -->
         </div>
-
         </div>
         <div class="attend" style="padding-left: 10px;">
-            <div class="line-chart" id="lineChartClient_24" style="width:950px;height:180px;margin-left:2%"></div>
+            <div ref="EchartsClient3" class="line-chart" id="lineChartClient_24" style="width:950px;height:180px;margin-left:2%"></div>
         </div>
     </div>
 </template>
 <script>
+// import { ref } from 'vue';
+// import { Datepicker, Timepicker, DatetimePicker, DateRangePicker } from '@livelybone/vue-datepicker';
 import bus from '../../utils'
 import common from '../../assets/js/common'
+// import Button from 'ant-design-vue/lib/button';
+// import 'ant-design-vue/lib/button/style';
+// const ButtonGroup = Button.Group;
+// import { NButton } from 'naive-ui'
+// import { ElMessage } from 'element-plus'
+// import { defineComponent } from 'vue'
+// import {NButton} from 'naive-ui'
+// import { ElButton } from 'element-plus'
+// import 'element-plus/dist/index.css'
+// import common_data from '../../assets/js/common_data'
+// import { defineComponent } from 'vue'
+// import { NButton } from 'naive-ui'
+// import DateRangePicker from 'vue2-daterange-picker'
+//you need to import the CSS manually
+// import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
+
 export default {
     name: 'subContent5',
+    // components: { DateRangePicker },
+    // components:{ Datepicker, Timepicker, DatetimePicker, DateRangePicker },
+    // components: {
+    //   AButton: Button,
+    //   AButtonGroup: ButtonGroup,
+    // },
+    // components: {
+    //   NButton
+    // },
+    // defineComponent({    
+    // components: { ElButton  },
+    // }),
     data() {
         return {
             //请求地址
@@ -73,19 +103,113 @@ export default {
             default_time : 1,
             selected_name:null,
             all_ele_data_24:null,
+            // isLoading :ref(false),
+            ele_list:[
+                {
+                    'id':1,
+                    'name':'有效波高'
+                },
+                {
+                    'id':2,
+                    'name':'最大波高'
+                },
+                {
+                    'id':3,
+                    'name':'风速'
+                },
+                {
+                    'id':4,
+                    'name':'风向'
+                },
+                {
+                    'id':5,
+                    'name':'有效波周期'
+                },                {
+                    'id':6,
+                    'name':'最大波周期'
+                },
+                {
+                    'id':7,
+                    'name':'大气压'
+                },
+                {
+                    'id':8,
+                    'name':'气温'
+                },                {
+                    'id':9,
+                    'name':'水温'
+                },                {
+                    'id':10,
+                    'name':'波高'
+                },                {
+                    'id':11,
+                    'name':'波向'
+                },                {
+                    'id':12,
+                    'name':'周期'
+                },                {
+                    'id':13,
+                    'name':'1/10波高'
+                },                {
+                    'id':14,
+                    'name':'1/10周期'
+                }
+            ],
+            // selected_ele:null,
             // date_format_str: 'dd HH',
-            default_ele : '有效波高'//有效波高
+            selected_ele : '有效波高'//有效波高
 
 
         }
     },
     created () {
         // console.log('重新加载Client3')
+        this.selected_ele = this.ele_list[0].name
     },
     // props:
     //     ['selected_name']
     // ,
     methods: {
+        query(){
+            // let isLoading = ref(false);
+            // this.isLoading.value  = true;
+            alert('query')
+        },
+        reloadChart(){
+            
+                    //清空数组
+                    this.data_arr_24=[]
+                        // alert(item.queryTime)
+                    this.time_arr_24=[]
+                    // if(this.se)
+                    // alert('1天全要素' + res.data.buoyDataList[0].queryTime)
+                    // alert('all_ele_data_24 长度' + this.all_ele_data_24.length)
+                    // alert('all_ele_data_24 时间' + this.all_ele_data_24[0].queryTime) 
+                    for(var i=0;i<this.all_ele_data_24.length;i++){
+                        // common.text()
+                       
+                        // this.data_arr_24 = this.all_ele_data_24
+                        this.data_arr_24.push(common.getSigleEleValue(this.selected_ele, this.all_ele_data_24[i]))
+                        // alert(item.queryTime)
+                        this.time_arr_24.push(this.all_ele_data_24[i].queryTime)
+                        // alert('时间' + item.queryTime)
+                    }
+                    this.name_ele = this.selected_ele
+                    // 重新加载图表
+                    this.getLineChart();
+                    // alert('time '+this.time_arr_24[0])
+                    // alert(this.time_arr_24.length)
+                    // alert('data ' + this.data_arr_24[0])
+                    // alert(this.data_arr_24.length)
+                    
+                    // bus.emit('lastAll', this.last_all_data);
+        },
+        changeElement(){
+            bus.emit('changeElement', this.selected_ele)
+            // alert(this.selected_ele)
+            this.reloadChart()
+        },
+
         createDateList(days) {
 
 
@@ -127,7 +251,7 @@ export default {
             //直接引用进来使用
             var echarts = require('echarts');
             // 基于准备好的dom，获取main节点init初始化echarts实例
-            var myChart = echarts.init(document.getElementById('lineChartClient_24'));
+            var myChart = echarts.init(this.$refs.EchartsClient3);
             // 指定图表的配置项和数据
             var option = {
                 title: {
@@ -225,11 +349,18 @@ export default {
         }
     },
     mounted() {
+        // this.ele_list = common_data.element_list
+        // alert(this.ele_list[0].name)
+        
+        // //清空数组
+        // this.data_arr_24=[]
+        // // alert(item.queryTime)
+        // this.time_arr_24=[]
         // console.log('子组件加载')
         //来自地图的鼠标点击Feature选中事件
         // bus.off('select_feature')
         bus.on('select_feature', val =>{
-            alert('client3')
+            // alert('client3')
             this.selected_name = val
             // var t = new Date().getTime();
             // alert('client3监听到选中 ' + this.selected_name)
@@ -241,38 +372,14 @@ export default {
             params: {//提交参数
                 
                 days:this.default_time,
-                name:this.selected_name,
+                name:this.selected_name
                 // timeStamp:t
             }}).then((res) => {
                 // console.log('30天' + res.data.buoyDataList[0].site)
                 // this.initLineChart()
                 if("100" == res.data.commonResultCode.code){
                     this.all_ele_data_24 = res.data.buoyDataList
-                    //清空数组
-                    this.data_arr_24=[]
-                        // alert(item.queryTime)
-                    this.time_arr_24=[]
-                    // alert('1天全要素' + res.data.buoyDataList[0].queryTime)
-                    // alert('all_ele_data_24 长度' + this.all_ele_data_24.length)
-                    // alert('all_ele_data_24 时间' + this.all_ele_data_24[0].queryTime) 
-                    for(var i=0;i<this.all_ele_data_24.length;i++){
-                        // common.text()
-                       
-                        // this.data_arr_24 = this.all_ele_data_24
-                        this.data_arr_24.push(common.getSigleEleValue(this.default_ele, this.all_ele_data_24[i]))
-                        // alert(item.queryTime)
-                        this.time_arr_24.push(this.all_ele_data_24[i].queryTime)
-                        // alert('时间' + item.queryTime)
-                    }
-                    this.name_ele = this.default_ele
-                    // 重新加载图表
-                    this.getLineChart();
-                    // alert('time '+this.time_arr_24[0])
-                    // alert(this.time_arr_24.length)
-                    // alert('data ' + this.data_arr_24[0])
-                    // alert(this.data_arr_24.length)
-                    
-                    // bus.emit('lastAll', this.last_all_data);
+                    this.reloadChart()
                 }else if("400" == res.data.commonResultCode.code){
                      alert(res.data.commonResultCode.message)
                 }else if("500" == res.data.commonResultCode.code){
@@ -297,6 +404,9 @@ export default {
         // console.log(this.data_arr.length)
         this.getLineChart();
     },
+    beforeDestroy () {
+            bus.off('select_feature')
+        },
     watch:{
 
     }
@@ -408,10 +518,11 @@ export default {
     height: 30px;
     font-size: 16px;
     color:white;
-    background: #ea9218;
+    /* background: #ea9218; */
     background-size: 100%;
     font-family: "微软雅黑";
-    border-radius: 10px
+    border-radius: 10px;
+    font-weight:500
     /* color: #ece847; */
 }
 .sub-content-client3-info .attend .attention-icon img {

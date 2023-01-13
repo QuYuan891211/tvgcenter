@@ -5,7 +5,7 @@
         <div class="title">海区最大有效波高</div>
         <div class="time">2022年11月18日08时</div>
         <div>
-            <div id="barChart" style="width: 100%;height:210px;"></div>
+            <div ref="Echarts6" id="barChart" style="width: 100%;height:210px;"></div>
         </div>
     </div>
 </template>
@@ -25,11 +25,11 @@ export default {
             let arr = [0.7, 0.4, 0.8, 1.7, 1.9, 1.1, 0, 1.6];
             let max = arr.sort().reverse()[0];
 
-            console.log('getBarChart');
+            // console.log('getBarChart');
             //直接引用进来使用
             var echarts = require('echarts');
             // 基于准备好的dom，获取main节点init初始化echarts实例
-            var myChart = echarts.init(document.getElementById('barChart'));
+            var myChart = echarts.init(this.$refs.Echarts6);
 
             var option;
             option = {

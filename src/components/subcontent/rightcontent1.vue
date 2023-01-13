@@ -3,7 +3,7 @@
     <div class=title>数据到报与要素统计</div>
     <div style="display:flex;position:relative">
             <div style="width:40%;margin-left:2%">
-                <div class="pie-chart" id="pieChart" style="width: 262px;height:180px;"></div>
+                <div ref="Echarts1" class="pie-chart" id="pieChart" style="width: 262px;height:180px;"></div>
             </div>
             <div  style="width:0%;margin-left:15%">
                 <!-- <div class="barnum-chart" id="barNumChart" style="width: 100px;height:164px;"></div> -->
@@ -43,7 +43,7 @@ export default {
             //直接引用进来使用
             var echarts = require('echarts');
             // 基于准备好的dom，获取main节点init初始化echarts实例
-            var myChart = echarts.init(document.getElementById('pieChart'));
+            var myChart = echarts.init(this.$refs.Echarts1);
             // 指定图表的配置项和数据
             var option = {
                 tooltip: {

@@ -4,12 +4,13 @@
         <div class="title">海区最大平均风速</div>
         <div class="time">2022年11月18日08时</div>
         <div>
-            <div id="barChart_wind" style="width: 100%;height:210px;"></div>
+            <div ref="Echarts7" id="barChart_wind" style="width: 100%;height:210px;"></div>
         </div>
     </div>
 </template>
 <script>
 export default {
+    
     name: 'subContent7',
     data() {
         return {
@@ -24,11 +25,11 @@ export default {
             let arr = [6.5, 1.9, 7.1, 8.8, 8.7, 9.7, 0, 8.1];
             let max = arr.sort().reverse()[0];
 
-            console.log('getBarChart');
+            // console.log('getBarChart');
             //直接引用进来使用
             var echarts = require('echarts');
             // 基于准备好的dom，获取main节点init初始化echarts实例
-            var myChart = echarts.init(document.getElementById('barChart_wind'));
+            var myChart = echarts.init(this.$refs.Echarts7);
 
             var option;
             option = {

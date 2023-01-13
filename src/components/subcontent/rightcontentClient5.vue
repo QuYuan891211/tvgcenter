@@ -3,7 +3,7 @@
     <div class="sub-content-client3-info">
         <div class=title>最近30天</div>
         <div class="attend" style="padding-left: 10px;">
-            <div class="line-chart" id="lineChartClient_30" style="width: 950px;height:210px;margin-left:2%"></div>
+            <div ref="EchartsClient5" class="line-chart" id="lineChartClient_30" style="width: 950px;height:210px;margin-left:2%"></div>
         </div>
     </div>
 </template>
@@ -26,16 +26,43 @@ export default {
             selected_name:null,
             all_ele_data_30:null,
             // date_format_str: 'dd HH',
-            default_ele : '有效波高'//有效波高
+            selected_ele : '有效波高'//有效波高
         }
     },
     methods: {
+        reloadChart(){
+                    //清空数组
+                     this.data_arr_30=[]
+                    // alert(item.queryTime)
+                    this.time_arr_30=[]
+                    // alert('1天全要素' + res.data.buoyDataList[0].queryTime)
+                    // alert('all_ele_data_30 长度' + this.all_ele_data_30.length)
+                    // alert('all_ele_data_30 时间' + this.all_ele_data_30[0].queryTime) 
+                    for(var i=0;i<this.all_ele_data_30.length;i++){
+                        // common.text()
+                       
+                        // this.data_arr_30 = this.all_ele_data_30
+                        this.data_arr_30.push(common.getSigleEleValue(this.selected_ele, this.all_ele_data_30[i]))
+                        // alert(item.queryTime)
+                        this.time_arr_30.push(this.all_ele_data_30[i].queryTime)
+                        // alert('时间' + item.queryTime)
+                    }
+                    this.name_ele = this.selected_ele
+                    // 重新加载图表
+                    this.getLineChart();
+                    // alert('time '+this.time_arr_30[0])
+                    // alert(this.time_arr_30.length)
+                    // alert('data ' + this.data_arr_30[0])
+                    // alert(this.data_arr_30.length)
+                    
+                    // bus.emit('lastAll', this.last_all_data);
+        },
         // 取的学生考勤率曲线图数据
         getLineChart() {
             //直接引用进来使用
             var echarts = require('echarts');
             // 基于准备好的dom，获取main节点init初始化echarts实例
-            var myChart = echarts.init(document.getElementById('lineChartClient_30'));
+            var myChart = echarts.init(this.$refs.EchartsClient5);
             // 指定图表的配置项和数据
             var option = {
                 title: {
@@ -87,7 +114,7 @@ export default {
                 ],
                 series: [
                     {
-                        name:this.name,
+                        name:this.name_ele,
                         type: 'line',
                         stack: '总量',
                         areaStyle: {
@@ -133,6 +160,14 @@ export default {
         }
     },
     mounted() {
+                 // console.log('子组件加载')
+        //来自地图的鼠标点击Feature选中事件
+        // bus.off('select_feature')
+        bus.on('changeElement', val =>{
+
+            this.selected_ele = val
+            this.reloadChart()
+        })
          // console.log('子组件加载')
         //来自地图的鼠标点击Feature选中事件
         // bus.off('select_feature')
@@ -156,31 +191,7 @@ export default {
                 // this.initLineChart()
                 if("100" == res.data.commonResultCode.code){
                     this.all_ele_data_30 = res.data.buoyDataList
-                    //清空数组
-                    this.data_arr_30=[]
-                        // alert(item.queryTime)
-                    this.time_arr_30=[]
-                    // alert('1天全要素' + res.data.buoyDataList[0].queryTime)
-                    // alert('all_ele_data_30 长度' + this.all_ele_data_30.length)
-                    // alert('all_ele_data_30 时间' + this.all_ele_data_30[0].queryTime) 
-                    for(var i=0;i<this.all_ele_data_30.length;i++){
-                        // common.text()
-                       
-                        // this.data_arr_30 = this.all_ele_data_30
-                        this.data_arr_30.push(common.getSigleEleValue(this.default_ele, this.all_ele_data_30[i]))
-                        // alert(item.queryTime)
-                        this.time_arr_30.push(this.all_ele_data_30[i].queryTime)
-                        // alert('时间' + item.queryTime)
-                    }
-                    this.name_ele = this.default_ele
-                    // 重新加载图表
-                    this.getLineChart();
-                    // alert('time '+this.time_arr_30[0])
-                    // alert(this.time_arr_30.length)
-                    // alert('data ' + this.data_arr_30[0])
-                    // alert(this.data_arr_30.length)
-                    
-                    // bus.emit('lastAll', this.last_all_data);
+                    this.reloadChart()
                 }else if("400" == res.data.commonResultCode.code){
                      alert(res.data.commonResultCode.message)
                 }else if("500" == res.data.commonResultCode.code){
@@ -204,7 +215,10 @@ export default {
         // console.log(this.data_arr_30.length)
         // console.log(this.data_arr.length)
         this.getLineChart();
-    },
+    },        
+    beforeDestroy () {
+            bus.off('select_feature')
+        },
 }
 </script>
 <style>
