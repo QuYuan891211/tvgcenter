@@ -7,43 +7,55 @@
             <!-- <div>自定义查询</div> -->
             <div class="switch-bar-div">
                 <!-- <div class="switch-bar-tips">切换要素</div> -->
-            <select class="switch-bar-select" v-model="this.selected_ele" @change="changeElement">
+                <el-select @change="changeElement" v-model="this.selected_ele" class="switch-bar-select" placeholder="this.ele_list[0].name" size="select">
+                        <el-option
+                        v-for="item in ele_list"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.name"
+                        />
+                </el-select>
+            <!-- <select class="switch-bar-select" v-model="this.selected_ele" @change="changeElement">
 
                 <option v-for="option in ele_list" v-bind:value="option.name">{{option.name}}</option>
 
 
-            </select>
+            </select> -->
         </div>
         
-        <div class="search-bar-div">
-            <select class="search-bar-select">
 
-                <option value ="volvo">2022-11-17 09</option>
-
-                <option value ="saab">最大波高</option>
-
-                <option value="opel">最大风速</option>
-
-                <option value="audi">平均风速</option>
-
-            </select>
-        </div>
 
         <div class="search-bar-div">
+            <el-icon :size="30" color="white" style="margin-right: 1%;">
+                    <search />
+                </el-icon>
             <!-- <input type="text" class="easyui-datetimebox" id="datetime"> -->
-
+            <div class="block">
+            <!-- <span class="demonstration">Default</span> -->
+            <el-date-picker
+            v-model="this.selected_time"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="选择开始时间"
+            end-placeholder="选择结束时间"
+            :default-time="this.defaultTime"
+            />
+         </div>
 
         </div>
-        <div class="search-bar-div">
-            <el-button>测试</el-button>
+        <!-- <div class="search-bar-div"> -->
+            <!-- <el-button>测试</el-button> -->
 
-            <el-button type="warning">Warning</el-button>
+            <!-- <el-button :icon="Search" type="warning">
+
+    <span style="vertical-align: middle;"> 自定义时间查询 </span>
+</el-button> -->
             <!-- <n-button>naive-ui</n-button> -->
             <!-- <a-button>Add</a-button> -->
-            <nut-button class="search-button" :loading="isLoading" type="warning" @click="query">自定义时间查询</nut-button>
+            <!-- <nut-button class="search-button" :loading="isLoading" type="warning" @click="query">自定义时间查询</nut-button> -->
             <!-- <el-button type="primary">Primary</el-button> -->
             <!-- <v-md-date-range-picker></v-md-date-range-picker> -->
-        </div>
+        <!-- </div> -->
         </div>
         <div class="attend" style="padding-left: 10px;">
             <div ref="EchartsClient3" class="line-chart" id="lineChartClient_24" style="width:950px;height:180px;margin-left:2%"></div>
@@ -57,6 +69,9 @@
 // import { Datepicker, Timepicker, DatetimePicker, DateRangePicker } from '@livelybone/vue-datepicker';
 import bus from '../../utils'
 import common from '../../assets/js/common'
+// import { Search } from '@element-plus/icons-vue'
+import { ref } from 'vue'
+// import { Download, Search, Share, Upload } from '@element-plus/icons-vue'
 // import Button from 'ant-design-vue/lib/button';
 // import 'ant-design-vue/lib/button/style';
 // const ButtonGroup = Button.Group;
@@ -75,6 +90,9 @@ import common from '../../assets/js/common'
 
 export default {
     name: 'subContent5',
+    // components: {
+    //         Search
+    //     },
     // components: { DateRangePicker },
     // components:{ Datepicker, Timepicker, DatetimePicker, DateRangePicker },
     // components: {
@@ -99,7 +117,7 @@ export default {
             default_time : 1,
             selected_name:null,
             all_ele_data_24:null,
-            // isLoading :ref(false),
+            selected_time : [ new Date(new Date().getTime() - 24*60*60*1000), new Date()],
             ele_list:[
                 {
                     'id':1,
@@ -335,7 +353,7 @@ export default {
                 animation: true,
                 animationThreshold: 2500,       // 动画元素阀值，产生的图形原素超过2500不出动画
                 addDataAnimation: true,         // 动态数据接口是否开启动画效果
-                animationDuration: 3000,
+                animationDuration: 1000,
                 animationEasing: 'cubicInOut'
             };
             // 使用刚指定的配置项和数据显示图表。
@@ -356,8 +374,12 @@ export default {
         //来自地图的鼠标点击Feature选中事件
         // bus.off('select_feature')
         bus.on('select_feature', val =>{
-            // alert('client3')
+            // 在鼠标切换点位时，时间选择组件恢复默认值
+            // this.selected_ele = this.ele_list[0].name//有效波高
+            // bus.emit('changeElement', this.selected_ele)
+            this.selected_time = [ new Date(new Date().getTime() - 24*60*60*1000), new Date()],
             this.selected_name = val
+
             // var t = new Date().getTime();
             // alert('client3监听到选中 ' + this.selected_name)
              //发送请求，获取选中浮标的最近1天数据
@@ -453,15 +475,15 @@ export default {
 .switch-bar-div{
     display: flex;
     flex-direction: row;
-    margin-right: 35%;
+    margin-right: 23%;
 }
 .switch-bar-tips{
     color: white;
-    margin-right: 8%;
+    margin-right: 6%;
 
 }
 .switch-bar-select{
-    width:100px;
+    width:120px;
     height: 30px;
 }
 .sub-content-client3-info .title {
@@ -497,7 +519,9 @@ export default {
 
 }
 .search-bar-div{
-      margin-right: 2%;  
+    display: flex;
+    flex-direction: row;
+    margin-right: 2%;  
     }
 .search-bar-select{
     width:150px;
@@ -552,5 +576,20 @@ export default {
 .sub-content-client3-info .static img {
     width: 14px;
     height: 14px
+}
+.block {
+  padding: 0 0;
+  text-align: center;
+  border-right: solid 1px var(--el-border-color);
+  flex: 1;
+}
+.block:last-child {
+  border-right: none;
+}
+.block .demonstration {
+  display: block;
+  color: var(--el-text-color-secondary);
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 </style>

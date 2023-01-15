@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@nutui/nutui": "^3.3.2",
+    "@element-plus/icons-vue": "^2.0.10",
     "D": "^1.0.0",
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
@@ -16,7 +16,6 @@
     "element-plus": "^2.2.28",
     "mitt": "^3.0.0",
     "ol": "^6.15.1",
-    "tdesign-vue": "^1.0.4",
     "vue": "^3.2.13",
     "vue-bus": "^1.2.1",
     "vue-router": "^4.1.3",

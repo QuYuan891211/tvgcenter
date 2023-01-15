@@ -150,7 +150,7 @@ export default {
                 animation: true,
                 animationThreshold: 2500,       // 动画元素阀值，产生的图形原素超过2500不出动画
                 addDataAnimation: true,         // 动态数据接口是否开启动画效果
-                animationDuration: 3000,
+                animationDuration: 2000,
                 animationEasing: 'cubicInOut'
             };
             // 使用刚指定的配置项和数据显示图表。

@@ -2,7 +2,7 @@
     <div class = "left-tool-bar">
         <div v-for="(item, index) in menus" :key="index" @click="selectMenu(index)">
                 <div class="menus-item" >
-                <div class="map-button">{{ item.title }}</div>>
+                <div class="map-button">{{ item.title }}</div>
                 </div>
         </div>
         

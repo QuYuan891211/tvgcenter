@@ -15,7 +15,14 @@ import router from './router'
 // import 'element-plus/theme-chalk/index.css'
 // import naive from 'naive-ui'
 import ElementPlus from 'element-plus'
+
 import 'element-plus/theme-chalk/index.css'
+
+
+import locale from 'element-plus/lib/locale/lang/zh-cn'
+import {Timer,Search} from '@element-plus/icons-vue'
+
+
 // import axios from "axios";
 // import NutUI from "@nutui/nutui";
 // import ArcoVue from '@arco-design/web-vue';
@@ -31,11 +38,15 @@ import 'element-plus/theme-chalk/index.css'
 // import 'vx-easyui/dist/themes/icon.css';
 // import 'vx-easyui/dist/themes/vue.css';
 // import EasyUI from 'vx-easyui';
-import NutUI from "@nutui/nutui";
+// import NutUI from "@nutui/nutui";
 // 采用按需加载时  此全局css样式，需要删除
-import "@nutui/nutui/dist/style.css";
+// import "@nutui/nutui/dist/style.css";
 const app = createApp(App)
+app.component("Timer",Timer)
+app.component("Search",Search)
+
+
 // RegisterElement(app)
-app.use(router).use(NutUI).use(ElementPlus).mount('#app')
+app.use(router).use(ElementPlus,{locale}).mount('#app')
 // app.config.globalProperties.$echarts = echarts
 
