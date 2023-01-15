@@ -20,7 +20,7 @@ import 'element-plus/theme-chalk/index.css'
 
 
 import locale from 'element-plus/lib/locale/lang/zh-cn'
-import {Timer,Search} from '@element-plus/icons-vue'
+import {Search, Sort, Switch,Download} from '@element-plus/icons-vue'
 
 
 // import axios from "axios";
@@ -42,8 +42,10 @@ import {Timer,Search} from '@element-plus/icons-vue'
 // 采用按需加载时  此全局css样式，需要删除
 // import "@nutui/nutui/dist/style.css";
 const app = createApp(App)
-app.component("Timer",Timer)
+app.component("Switch",Switch)
 app.component("Search",Search)
+app.component("Sort",Sort)
+app.component("Download",Download)
 
 
 // RegisterElement(app)

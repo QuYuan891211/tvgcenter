@@ -5,7 +5,7 @@
         <img class="menu-cover" src="@/assets/nav_bg.png" alt="" />
         <div class="menus-bar">
             <div v-for="(item, index) in menus" :key="index" @click="selectMenu(index)">
-                <div class="menus-item" :class="index != active ? 'item-bg' : 'item-bg-select'">{{ item.title }}</div>
+                <div class="menus-item" :class="index != active ? 'item-bg' : 'item-bg-select'" @click="this.message_disable">{{ item.title }}</div>
             </div>
         </div>
         <img class="menu-arrow-img" src="@/assets/menu-arrow.png" alt="" @click="leftExpand">
@@ -13,6 +13,7 @@
 
 </template>
 <script>
+import common from '../../assets/js/common'
 import bus from '../../utils'
 export default {
     name: 'menu1',
@@ -24,6 +25,7 @@ export default {
     },
     data() {
         return {
+            selected_type:"浮标",
             // 菜单栏数据
             menus: [
                 { title: '浮标' },
@@ -41,6 +43,12 @@ export default {
         }
     },
     methods: {
+        message_disable(){
+
+                common.message_disable_function()
+   
+
+        },
         // 左侧菜单展开
         leftExpand() {
             if (this.leftbarLeft == 0) {

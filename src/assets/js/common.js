@@ -32,7 +32,34 @@ export default {
      
     // alert("测试，测试！！！")
 },
-   
+message_disable_function(){
+   ElMessage({
+      showClose: true,
+      message: '此功能尚不可用.',
+      type: 'error',
+    })
+},
+notification_info(message){
+   ElNotification({
+      title: '消息',
+      message: message,
+      type: 'info',
+    })
+},
+notification_warning(message){
+   ElNotification({
+      title: '警告',
+      message: message,
+      type: 'warning',
+    })
+},
+notification_error(message){
+   ElNotification({
+      title: '错误',
+      message: message,
+      type: 'error',
+    })
+}
 
 }
 

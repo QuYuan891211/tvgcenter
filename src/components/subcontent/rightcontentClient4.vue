@@ -2,8 +2,36 @@
     <!-- 学校基本信息 -->
     <div class="sub-content-client3-info">
         <div class=title>最近7天</div>
+        <div class="search-bar">
+
+<!-- <div>自定义查询</div> -->
+    <div class="switch-bar-div">
+        
+    </div>
+
+
+
+    <div class="search-bar-div">
+
+    </div>
+    <div class="save-bar-div">
+    <!-- <el-button>测试</el-button> -->
+
+    <el-button type="warning" @click="this.message_disable">
+        <el-icon :size="25" color="white" style="vertical-align: middle; margin-right: 2%;">
+            <Download />
+        </el-icon>
+    <span style="vertical-align: middle;"> 图片下载 </span>
+    </el-button>
+    <!-- <n-button>naive-ui</n-button> -->
+    <!-- <a-button>Add</a-button> -->
+    <!-- <nut-button class="search-button" :loading="isLoading" type="warning" @click="query">自定义时间查询</nut-button> -->
+    <!-- <el-button type="primary">Primary</el-button> -->
+    <!-- <v-md-date-range-picker></v-md-date-range-picker> -->
+    </div>
+    </div>
         <div class="attend" style="padding-left: 10px;">
-            <div ref="EchartsClient4" class="line-chart" id="lineChartClient_7" style="width: 950px;height:210px;margin-left:2%"></div>
+            <div ref="EchartsClient4" class="line-chart" id="lineChartClient_7" style="width: 950px;height:180px;margin-left:2%"></div>
         </div>
     </div>
 </template>
@@ -32,6 +60,9 @@ export default {
         }
     },
     methods: {
+        message_disable(){
+            common.message_disable_function()
+        },
         reloadChart(){
             //清空数组
             this.data_arr_7=[]
@@ -85,8 +116,9 @@ export default {
                 },
                 grid: {
                     left: '3%',
-                    right: '4%',
-                    bottom: '3%',
+                    right: '3%',
+                    bottom: '5%',
+                    top:'10%',
                     containLabel: true
                 },
                 xAxis: [
@@ -190,12 +222,16 @@ export default {
                 if("100" == res.data.commonResultCode.code){
                     this.all_ele_data_7 = res.data.buoyDataList
                     this.reloadChart()
-                }else if("400" == res.data.commonResultCode.code){
-                     alert(res.data.commonResultCode.message)
-                }else if("500" == res.data.commonResultCode.code){
-                    
+                }else if ("400" == res.data.commonResultCode.code) {
+                    common.notification_error(res.data.commonResultCode.message);
+                    this.all_ele_data_7 = []
+                    this.reloadChart()
                 }
-
+                else if ("500" == res.data.commonResultCode.code) {
+                    common.notification_warning(res.data.commonResultCode.message)
+                    this.all_ele_data_7 = []
+                    this.reloadChart()
+                }
             })
             // console.log(val)
             // this.selected_name = val
@@ -286,5 +322,13 @@ export default {
 .sub-content-client3-info .static img {
     width: 14px;
     height: 14px
+}
+.search-bar{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+    margin-left: 5%;
+
 }
 </style>
