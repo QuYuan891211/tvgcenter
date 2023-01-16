@@ -16,14 +16,15 @@
         </div>
         <div class="static-bg-ele">
           <div class="name">气象要素</div>
-          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">7 <span
+          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">6 <span
               style="color: #5cb2fa;font-size:14px;">种</span> </div>
         </div>
         <div class="static-bg-ele">
           <div class="name">海温要素</div>
-          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">1 <span
+          <div style="color: #ffffff;font-size:23px;text-align: center;padding:3px 0;">2 <span
               style="color: #5cb2fa;font-size:14px;">种</span> </div>
         </div>
+        
       </div>
             </div>
     </div>
@@ -35,9 +36,33 @@ export default {
     name: 'subContent4',
     data() {
         return {
+            url_data_statist:'http://localhost:8081/buoy/statistics',
+            success_num:null
         }
     },
     methods: {
+        getStatistics(){
+
+                //发送请求，获取选中浮标的最近30天数据
+                        axios(
+                {
+                method: 'get',//提交方法
+                url: this.url_data_statist,//提交地址
+                params: {//提交参数
+
+                }}).then((res) => {
+                // console.log('30天' + res.data.buoyDataList[0].site)
+                // this.initLineChart()
+                if(100 == res.data.commonResultCode.code){
+                this.success_num = res.data.num
+                this.getPieChart();
+                // bus.emit('lastAll', this.last_all_data);
+                }else {
+                    common.notification_error(res.data.commonResultCode.message);
+                    }
+
+                })
+                },
         // 取得男女比例饼状图数据
         getPieChart() {
             //直接引用进来使用
@@ -77,16 +102,14 @@ export default {
                             show: false
                         },
                         data: [
-                            { value: 11, name: '正常' },
-                            { value: 8, name: '缺报' },
-                            { value: 10, name: '未到' },
+                            { value: this.success_num, name: '正常' },
+                            { value: 29-this.success_num, name: '缺报' },
                         ],
                     },
                 ],
                 color: [
                     '#21b2c3',
                     'red',
-                    'gray',
                 ],
                 animation: true,
                 animationThreshold: 2500,       // 动画元素阀值，产生的图形原素超过2500不出动画
@@ -213,7 +236,7 @@ export default {
         }
     },
     mounted() {
-        this.getPieChart();
+        this.getStatistics()
         // this.getBarNumChart();
     },
 }

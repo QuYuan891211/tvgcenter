@@ -14,14 +14,14 @@
                         <rightcontent1></rightcontent1>
                         <rightcontent3></rightcontent3>
                     </div>
-                    <div style="display:flex;position:relative;width:100%;height: 33%;margin-top: 1%;">
+                    <div style="display:flex;position:relative;width:100%;height: 66%;margin-top: 1%;">
                         <rightcontent6></rightcontent6>
                         <!-- <rightcontent2></rightcontent2> -->
                     </div>
-                    <div style="display:flex;position:relative;width:100%;height: 33%;margin-top: 1%;">
+                    <!-- <div style="display:flex;position:relative;width:100%;height: 33%;margin-top: 1%;">
                         <rightcontent7></rightcontent7>
                     
-                    </div>
+                    </div> -->
 
             </div>
         </div>
@@ -90,7 +90,7 @@ export default {
     },
     data() {
         return {
-            url_last_data : 'http://localhost:8081/buoy/lastAll',
+
 
             curHeight: document.documentElement.clientHeight, // 屏幕高度
             curWidth: document.documentElement.clientWidth, // 屏幕尺寸
@@ -101,7 +101,7 @@ export default {
             active: 0,
             selectMenu:0, //当前选择的左侧菜单
             selected_name:null,//子组件map传所选中的点的name
-            default_time:30,
+            default_time:31,
             last_all_data:null,
             
             timer:''
@@ -120,32 +120,11 @@ export default {
         //     console.log('从子组件传来'+ this.selected_name)
         // }
         //
-        getLastMonthData(){
 
-                        //发送请求，获取选中浮标的最近30天数据
-                                axios(
-                {
-            method: 'get',//提交方法
-            url: this.url_last_data,//提交地址
-            params: {//提交参数
-                // name:this.selected_name,
-                days:this.default_time
-            }}).then((res) => {
-                // console.log('30天' + res.data.buoyDataList[0].site)
-                // this.initLineChart()
-                if(100 == res.data.commonResultCode.code){
-                    this.last_all_data = res.data.buoyDataList
-                    bus.emit('lastAll', this.last_all_data);
-                }else{
-                    alert(res.data.commonResultCode.message)
-                }
-
-            })
-        },
 
     },
     mounted() {
-        this.getLastMonthData()
+        // this.getLastMonthData()
         //来自地图图标点击事件
         bus.off('changeActive')
         bus.on('changeActive', val => {

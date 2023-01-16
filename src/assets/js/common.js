@@ -28,7 +28,13 @@ export default {
         return item.at
      }else if('水温'==name){
         return item.wt
-     }
+     }else if('相对湿度'==name){
+      return item.hu
+   }else if('最大风速'==name){
+      return item.wsm
+   }else if('盐度'==name){
+      return item.sl
+   }
      
     // alert("测试，测试！！！")
 },

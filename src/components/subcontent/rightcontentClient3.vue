@@ -183,6 +183,18 @@ export default {
                 {
                     "id": 14,
                     "name": "1/10周期"
+                },
+                {
+                    "id": 15,
+                    "name": "最大风速"
+                },
+                {
+                    "id": 16,
+                    "name": "相对湿度"
+                },
+                {
+                    "id": 17,
+                    "name": "盐度"
                 }
             ],
             // selected_ele:null,
@@ -232,6 +244,11 @@ export default {
                     this.reloadChart()
                 }
                 else if ("500" == res.data.commonResultCode.code) {
+                    common.notification_warning(res.data.commonResultCode.message)
+
+                    this.reloadChart()
+                }
+                else if ("600" == res.data.commonResultCode.code) {
                     common.notification_warning(res.data.commonResultCode.message)
 
                     this.reloadChart()
@@ -444,6 +461,11 @@ export default {
                     this.reloadChart()
                 }
                 else if ("500" == res.data.commonResultCode.code) {
+                    common.notification_warning(res.data.commonResultCode.message)
+                    this.all_ele_data_24 = []
+                    this.reloadChart()
+                }
+                else if ("600" == res.data.commonResultCode.code) {
                     common.notification_warning(res.data.commonResultCode.message)
                     this.all_ele_data_24 = []
                     this.reloadChart()

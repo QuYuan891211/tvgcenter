@@ -3,38 +3,10 @@
     <div class="sub-content-info-overview">
         <!-- TODO:标题和时间放到同一行 -->
         <div class="title">最新数据</div>
-        <div class="last-data-bar">
-        <el-table class="last-data-table"
-            :data="this.last_all_data"
-            :row-class-name="tableRowClassName"
-            :header-cell-style="{
-            background: '#003460',
-            color: '#ffffff',
-            fontWeight: '1500',
-            fontSize: '16px',
-      }"
-      :cell-style="{
-            background: '#003460',
-            color: '#ffffff',
-            fontWeight: '600',
-            fontSize: '14px',
-            
-      }"
-
-        >
-        <el-table-column class="last-data-table-column" prop="site" label="名称" />
-    <el-table-column class="last-data-table-column" align="center" prop="queryTime" label="时间" />
-    <el-table-column class="last-data-table-column" align="center" prop="ybg" label="有效波高（米）" />
-    <el-table-column class="last-data-table-column" align="center" prop="zbg" label="最大波高（米）" />
-    <el-table-column class="last-data-table-column" align="center" prop="ws" label="风速（米每秒）" />
-    <el-table-column class="last-data-table-column" align="center" prop="wd" label="风向"/>
-    
-  </el-table>
-</div>
         <!-- <div class="time">2022年11月18日08时</div> -->
-        <!-- <div>
+        <div>
             <div ref="Echarts6" id="barChart" style="width: 100%;height:210px;"></div>
-        </div> -->
+        </div>
     </div>
 </template>
 <script>
@@ -42,38 +14,10 @@ export default {
     name: 'subContent6',
     data() {
         return {
-            url_last_data : 'http://localhost:8081/buoy/filterlastAll',
-            data_wave:null,
-            default_time:31,
-            last_all_data:[]
+            data_wave:null
         }
     },
     methods: {
-        getLastAllData(){
-
-            //发送请求，获取选中浮标的最近30天数据
-                    axios(
-            {
-            method: 'get',//提交方法
-            url: this.url_last_data,//提交地址
-            params: {//提交参数
-            // name:this.selected_name,
-            days:this.default_time
-            }}).then((res) => {
-            // console.log('30天' + res.data.buoyDataList[0].site)
-            // this.initLineChart()
-            if(100 == res.data.commonResultCode.code){
-            this.last_all_data = res.data.buoyDataList
-            // bus.emit('lastAll', this.last_all_data);
-            }else if ("400" == res.data.commonResultCode.code) {
-                    common.notification_error(res.data.commonResultCode.message);
-                }
-                else{
-                    common.notification_warning(res.data.commonResultCode.message)
-                }
-
-            })
-            },
         //取得就业率柱状图数据
         getBarChart() {
             //获取数值
@@ -197,8 +141,7 @@ export default {
         },
     },
     mounted() {
-        this.getLastAllData()
-        // this.getBarChart();
+        this.getBarChart();
     },
 }
 </script>
@@ -296,31 +239,4 @@ export default {
     width: 14px;
     height: 14px;
 }
-.last-data-table{
-    width: 100%;
-    height:480px;
-    max-height: 480px;
-    /* 表格字体颜色 */
-    /* color:black; */
-
-}
-.last-data-bar{
-    margin-left: 2%;
-    margin-right: 2%;
-}
-/* 表格内背景颜色
-.el-table th, .el-table tr,.el-table td{
-border: 0;
-background-color: transparent;
-}
-/* 双数行背景颜色 */
-/* .el-table--striped .el-table__body tr.el-table__row--striped td {
- 
-background-color:#fff;
-background-color: rgba(148, 144, 144, 0.3)
-} */
-/* 使表格背景透明 */
-/* .el-table th, .el-table tr {
-background-color: transparent;
-} */ 
 </style>

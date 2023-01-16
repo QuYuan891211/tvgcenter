@@ -1,7 +1,7 @@
 <template>
     <!-- 学校基本信息 -->
     <div class="sub-content-client3-info">
-        <div class=title>最近30天</div>
+        <div class=title>最近1月</div>
         <div class="search-bar">
 
 <!-- <div>自定义查询</div> -->
@@ -50,7 +50,7 @@ export default {
             time_arr_30:[],
             unit:null,
             name_ele:null,
-            default_time : 30,
+            default_time : 31,
             selected_name:null,
             all_ele_data_30:null,
             // date_format_str: 'dd HH',
@@ -230,6 +230,11 @@ export default {
                     this.reloadChart()
                 }
                 else if ("500" == res.data.commonResultCode.code) {
+                    common.notification_warning(res.data.commonResultCode.message)
+                    this.all_ele_data_30 = []
+                    this.reloadChart()
+                }
+                else if ("600" == res.data.commonResultCode.code) {
                     common.notification_warning(res.data.commonResultCode.message)
                     this.all_ele_data_30 = []
                     this.reloadChart()

@@ -1,7 +1,7 @@
 <template>
     <!-- 学校基本信息 -->
     <div class="sub-content-client3-info">
-        <div class=title>最近7天</div>
+        <div class=title>最近1周</div>
         <div class="search-bar">
 
 <!-- <div>自定义查询</div> -->
@@ -228,6 +228,11 @@ export default {
                     this.reloadChart()
                 }
                 else if ("500" == res.data.commonResultCode.code) {
+                    common.notification_warning(res.data.commonResultCode.message)
+                    this.all_ele_data_7 = []
+                    this.reloadChart()
+                }
+                else if ("600" == res.data.commonResultCode.code) {
                     common.notification_warning(res.data.commonResultCode.message)
                     this.all_ele_data_7 = []
                     this.reloadChart()
