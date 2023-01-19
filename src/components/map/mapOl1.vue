@@ -261,45 +261,67 @@ export default {
 
         },
         initMap() {
-            var TiandiMap_vec = new ol.layer.Tile({
-                name: "天地图矢量图层",
-                source: new ol.source.XYZ({
-                    url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
+            // var TiandiMap_vec = new ol.layer.Tile({
+            //     name: "天地图矢量图层",
+            //     source: new ol.source.XYZ({
+            //         url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
+            //         wrapX: false
+            //     }),
+            //     preload:Infinity
+            // });
+            // var TiandiMap_cva = new ol.layer.Tile({
+            //     name: "天地图矢量注记图层",
+            //     source: new ol.source.XYZ({
+            //         url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
+            //         wrapX: false
+            //     }),
+            //     preload:Infinity
+            // });
+            // var TiandiMap_img = new ol.layer.Tile({
+            //     name: "天地图影像图层",
+            //     source: new ol.source.XYZ({
+            //         // url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
+            //         url:"http://localhost:8082/geoserver/observer/wms",
+            //         params:{
+            //             LAYERS:"observer:geotools_coverage"
+            //         },
+            //         wrapX: false
+            //     }),
+            //     preload:Infinity
+            // });
+            var GaodeMap_img = new ol.layer.Tile({
+                name: "高德影像图层",
+                source: new ol.source.TileWMS({
+                    // url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
+                    url:"http://localhost:8082/geoserver/observer/wms",
+                    params:{
+                        'FORMAT': 'image/png',
+                        'VERSION': '1.1.1',
+                        tiled: true,
+                        STYLES: '',
+                        LAYERS:"observer:gaode_part_imgAndMark_2"
+                    },
                     wrapX: false
                 }),
                 preload:Infinity
             });
-            var TiandiMap_cva = new ol.layer.Tile({
-                name: "天地图矢量注记图层",
-                source: new ol.source.XYZ({
-                    url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-                    wrapX: false
-                }),
-                preload:Infinity
-            });
-            var TiandiMap_img = new ol.layer.Tile({
-                name: "天地图影像图层",
-                source: new ol.source.XYZ({
-                    url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-                    wrapX: false
-                }),
-                preload:Infinity
-            });
-            var TiandiMap_cia = new ol.layer.Tile({
-                name: "天地图影像注记图层",
-                source: new ol.source.XYZ({
-                    url: "http://t0.tianditu.com/DataServer?T=cia_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-                    wrapX: false
-                }),
-                preload:Infinity
-            });
+            // var TiandiMap_cia = new ol.layer.Tile({
+            //     name: "天地图影像注记图层",
+            //     source: new ol.source.XYZ({
+            //         url: "http://t0.tianditu.com/DataServer?T=cia_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
+            //         wrapX: false
+            //     }),
+            //     preload:Infinity
+            // });
 
             //实例化Map对象加载地图
             this.map = new ol.Map({
                 //地图容器div的ID
                 target: 'olMap',
+                layers: [GaodeMap_img],
+                // layers: [TiandiMap_img],
                 //地图容器中加载的图层:加载影像图
-                layers: [TiandiMap_img, TiandiMap_cia],
+                // layers: [TiandiMap_img, TiandiMap_cia],
                 //地图容器中加载的图层:加载矢量图层
                 // layers: [TiandiMap_vec, TiandiMap_cva],
                 //地图视图设置
@@ -309,7 +331,7 @@ export default {
                     //地图初始显示级别
                     zoom: 5,
                     minZoom:4,
-                    maxZoom:7
+                    maxZoom:9
 
 
                 }),
