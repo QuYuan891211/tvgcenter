@@ -42,7 +42,7 @@ export default {
     name: 'subContent6',
     data() {
         return {
-            url_last_data : 'http://localhost:8081/buoy/filterlastAll',
+            url_last_data : 'http://localhost:8085/buoy/filterlastAll',
             data_wave:null,
             default_time:31,
             last_all_data:[]

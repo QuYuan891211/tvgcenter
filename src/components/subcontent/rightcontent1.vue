@@ -36,7 +36,7 @@ export default {
     name: 'subContent4',
     data() {
         return {
-            url_data_statist:'http://localhost:8081/buoy/statistics',
+            url_data_statist:'http://localhost:8085/buoy/statistics',
             success_num:null
         }
     },

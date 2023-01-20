@@ -1,7 +1,7 @@
 <template>
     <!-- 学校基本信息 -->
     <div class="sub-content-client3-info">
-        <div class=title>最近24小时</div>
+        <div class=title>{{ this.title }}</div>
         <!-- 搜索条件form -->
         <div class="search-bar">
 
@@ -51,11 +51,11 @@
         <div class="save-bar-div">
             <!-- <el-button>测试</el-button> -->
 
-            <el-button type="warning" @click="this.message_disable">
+            <el-button type="warning" @click="this.exportpic">
                 <el-icon :size="25" color="white" style="vertical-align: middle; margin-right: 1%;">
                     <Download />
                 </el-icon>
-                <span style="vertical-align: middle;"> 图片下载 </span>
+                <span style="vertical-align: middle;"> 图表下载 </span>
             </el-button>
             <!-- <n-button>naive-ui</n-button> -->
             <!-- <a-button>Add</a-button> -->
@@ -116,12 +116,13 @@ export default {
     data() {
         return {
             //请求地址
-            url_last_single_data: "http://localhost:8081/buoy/lastSingle",
-            url_query_single_data: "http://localhost:8081/buoy/query",
+            url_last_single_data: "http://localhost:8085/buoy/lastSingle",
+            url_query_single_data: "http://localhost:8085/buoy/query",
             //观测数据信息
             data_arr_24: [],
             time_arr_24: [],
             unit: null,
+            title:"最近24小时",
             name_ele: null,
             default_time: 1,
             selected_name: null,
@@ -210,6 +211,24 @@ export default {
     //     ['selected_name']
     // ,
     methods: {
+        exportpic(){
+                var echarts = require('echarts');
+                var myChart = echarts.init(this.$refs.EchartsClient3);
+                let picInfo=myChart.getDataURL({
+                    type: 'png',
+                    pixelRatio: 4,  //放大两倍下载，之后压缩到同等大小展示。解决生成图片在移动端模糊问题
+                    backgroundColor: '#12264f'
+                });//获取到的是一串base64信息
+ 
+                const elink = document.createElement('a');
+                elink.download = this.selected_name + '_' + common.dateFormat("YYYY-mm-dd HH",this.selected_time[0]) + '至' +common.dateFormat("YYYY-mm-dd HH",this.selected_time[1])  + '_' + this.selected_ele;
+                elink.style.display = 'none';
+                elink.href = picInfo;
+                document.body.appendChild(elink);
+                elink.click();
+                URL.revokeObjectURL(elink.href); // 释放URL 对象
+                document.body.removeChild(elink)
+			},
         message_disable(){
             common.message_disable_function()
         },
@@ -328,7 +347,8 @@ export default {
             var option = {
                 title: {
                     text: this.unit,
-                    top: "10%",
+                    top: "0%",
+                    left:'50%',
                     textStyle: {
                         color: "#FFFFFF",
                         fontSize: 14,
@@ -346,8 +366,8 @@ export default {
                 grid: {
                     left: "3%",
                     right: "3%",
-                    bottom: "5%",
-                    top:"10%",
+                    bottom: "0%",
+                    top:"18%",
                     containLabel: true
                 },
                 xAxis: [
@@ -437,6 +457,7 @@ export default {
             // bus.emit('changeElement', this.selected_ele)
             this.selected_time = [new Date(new Date().getTime() - 24 * 60 * 60 * 1000), new Date()],
                 this.selected_name = val;
+                this.unit = val
             // var t = new Date().getTime();
             // alert('client3监听到选中 ' + this.selected_name)
             //发送请求，获取选中浮标的最近1天数据
@@ -556,13 +577,13 @@ export default {
     line-height: 34px;
     letter-spacing: 1px;
     color: #b1eded;
-    margin-top: 8px;
+    margin-top: 2px;
     background: url(../../assets/rightcotent1_title_bg.png);
     background-position: center;
     background-size: 100%;
     background-repeat: no-repeat;
-    width: 221px;
-    height: 60px;
+    width: 210px;
+    height: 50px;
     padding-left: 30px;
 }
 
@@ -579,6 +600,7 @@ export default {
     justify-content:space-between;
     margin-left: 5%;
     margin-right: 5%;
+    margin-bottom: 1%;
 
 }
 .search-bar-div{

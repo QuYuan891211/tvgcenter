@@ -28,7 +28,7 @@ export default {
                 { title: '地图复位' },
 
             ],
-            url_load_config : 'http://localhost:8081/config/all',
+            url_load_config : 'http://localhost:8085/config/all',
             map: null,
             point_icon_style_path:'./static/images/label/icon32.png',
             point_selected_icon_style_path:'./static/images/label/icon32_selected.png',
@@ -150,7 +150,7 @@ export default {
                     var layers_collection =  vm.map.getLayers()
                     var layers_arrays = layers_collection.getArray()
                     // console.log('获取layers长度'+layers_arrays.length)
-                    var target_layer = layers_arrays[2]
+                    var target_layer = layers_arrays[1]
                     // console.log('获取layers长度'+layers_arrays.length)
                     var source = target_layer.getSource()
                     var features = source.getFeatures()

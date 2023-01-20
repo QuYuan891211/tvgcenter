@@ -1,7 +1,7 @@
 <template>
     <!-- 学校基本信息 -->
     <div class="sub-content-client3-info">
-        <div class=title>最近1周</div>
+        <div class=title>{{ this.title }}</div>
         <div class="search-bar">
 
 <!-- <div>自定义查询</div> -->
@@ -17,11 +17,11 @@
     <div class="save-bar-div">
     <!-- <el-button>测试</el-button> -->
 
-    <el-button type="warning" @click="this.message_disable">
+    <el-button type="warning" @click="this.exportpic">
         <el-icon :size="25" color="white" style="vertical-align: middle; margin-right: 2%;">
             <Download />
         </el-icon>
-    <span style="vertical-align: middle;"> 图片下载 </span>
+    <span style="vertical-align: middle;"> 图表下载 </span>
     </el-button>
     <!-- <n-button>naive-ui</n-button> -->
     <!-- <a-button>Add</a-button> -->
@@ -43,7 +43,8 @@ export default {
     data() {
         return {
             //请求地址
-            url_last_single_data:'http://localhost:8081/buoy/lastSingle',
+            // echarts_id : 'lineChartClient_7',
+            url_last_single_data:'http://localhost:8085/buoy/lastSingle',
             //观测数据信息
             data_arr_7:[],
             time_arr_7:[],
@@ -52,6 +53,7 @@ export default {
             default_time : 7,
             selected_name:null,
             all_ele_data_7:null,
+            title:"最近1周",
             // listen_list:[]
             // date_format_str: 'dd HH',
             selected_ele : '有效波高'//有效波高
@@ -60,6 +62,24 @@ export default {
         }
     },
     methods: {
+        exportpic(){
+                var echarts = require('echarts');
+                let myChart = echarts.init(this.$refs.EchartsClient4);
+                let picInfo=myChart.getDataURL({
+                    type: 'png',
+                    pixelRatio: 4,  //放大两倍下载，之后压缩到同等大小展示。解决生成图片在移动端模糊问题
+                    backgroundColor: '#12264f'
+                });//获取到的是一串base64信息
+ 
+                const elink = document.createElement('a');
+                elink.download = this.selected_name + '_' + this.title + '_' + this.selected_ele;
+                elink.style.display = 'none';
+                elink.href = picInfo;
+                document.body.appendChild(elink);
+                elink.click();
+                URL.revokeObjectURL(elink.href); // 释放URL 对象
+                document.body.removeChild(elink)
+			},
         message_disable(){
             common.message_disable_function()
         },
@@ -97,9 +117,31 @@ export default {
             var myChart = echarts.init(this.$refs.EchartsClient4);
             // 指定图表的配置项和数据
             var option = {
+        //     toolbox: {
+        //     show: true,
+        //     right:'20px',
+        //     top:'1px',
+        //     itemSize:'30',
+        //     iconStyle: {
+        //         borderColor: '#fff',//图标颜色
+        //         borderWidth: '5',
+        //         emphasis: {
+        //             color: '#000000',//鼠标滑过的颜色
+        //        },
+        //     },
+        //     feature: {
+        //     saveAsImage: {
+        //         show:true,
+        //         backgroundColor: '#ffffff',//保存图片的背景色
+        //         excludeComponents :['toolbox'],
+        //         pixelRatio: 2
+        //     }
+        //     }
+        // },
                 title: {
                     text: this.unit,
-                    top: '10%',
+                    top: '0%',
+                    left:'50%',
                     textStyle: {
                         color: '#FFFFFF',
                         fontSize: 14,
@@ -117,8 +159,8 @@ export default {
                 grid: {
                     left: '3%',
                     right: '3%',
-                    bottom: '5%',
-                    top:'10%',
+                    bottom: '0%',
+                    top:'18%',
                     containLabel: true
                 },
                 xAxis: [
@@ -204,6 +246,7 @@ export default {
         bus.on('select_feature', val =>{
             // alert('client4')
             this.selected_name = val
+            this.unit = val
             // var t = new Date().getTime();
             // alert('client3监听到选中 ' + this.selected_name)
              //发送请求，获取选中浮标的最近1天数据
@@ -249,7 +292,7 @@ export default {
         // console.log(this.data_arr_7)
         // console.log(this.data_arr)
         //TODO:动态获取单位
-        this.unit = ''
+        // this.unit = ''
         // this.name_ele = '有效波高'
         // console.log(this.data_arr_7.length)
         // console.log(this.data_arr.length)
@@ -285,7 +328,7 @@ export default {
     background-size: 100%;
     background-repeat: no-repeat;
     width: 221px;
-    height: 60px;
+    height: 50px;
     padding-left: 30px;
 }
 
