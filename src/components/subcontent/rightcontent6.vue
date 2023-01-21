@@ -14,7 +14,7 @@
             fontSize: '16px',
       }"
       :cell-style="{
-            background: '#003460',
+            // background: '#003460',
             color: '#ffffff',
             fontWeight: '600',
             fontSize: '14px',
@@ -22,7 +22,7 @@
       }"
 
         >
-        <el-table-column class="last-data-table-column" prop="site" label="名称" />
+        <el-table-column class="last-data-table-column"  align="center" prop="site" label="名称" />
     <el-table-column class="last-data-table-column" align="center" prop="queryTime" label="时间" />
     <el-table-column class="last-data-table-column" align="center" prop="ybg" label="有效波高（米）" />
     <el-table-column class="last-data-table-column" align="center" prop="zbg" label="最大波高（米）" />
@@ -49,6 +49,18 @@ export default {
         }
     },
     methods: {
+        tableRowClassName(val){
+            if(val.row.ybg >= 2.5 && val.row.ybg < 3.5){
+                return 'blue-level-bg'
+            }else if(val.row.ybg >= 3.5 && val.row.ybg < 4.5){
+                return 'yellow-level-bg'
+            }else if(val.row.ybg >= 4.5 && val.row.ybg < 6){
+                return 'orange-level-bg'
+            }else if(val.row.ybg >= 6){
+                return 'red-level-bg'
+            }
+            return 'normal-bg'
+        },
         getLastAllData(){
 
             //发送请求，获取选中浮标的最近30天数据
@@ -323,4 +335,36 @@ background-color: rgba(148, 144, 144, 0.3)
 /* .el-table th, .el-table tr {
 background-color: transparent;
 } */ 
+
+.el-table .warning-row {
+  --el-table-tr-bg-color: var(--el-color-warning-light-9);
+}
+.el-table .success-row {
+  --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
+.el-table .message-row {
+  --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
+.el-table .blue-level-bg{
+  background: #0f98a0;
+}
+.el-table .yellow-level-bg{
+  background: #dcc246;
+  /* background: #f89100; */
+  /* background: #df433c; */
+}
+.el-table .orange-level-bg{
+  background: orange;
+}
+.el-table .red-level-bg{
+  background: #df433c;
+}
+.el-table .normal-bg{
+  background: #003460;
+}
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: #003460 !important;
+  /* color: #f19944;  */
+
+}
 </style>
