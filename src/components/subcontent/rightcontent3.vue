@@ -3,7 +3,7 @@
   <div class="sub-content-info">
     <div class=title>数据总览</div>
     <div style="display:flex">
-      <div style="padding-left: 10px;">
+      <div style="padding-left: 30px;">
         <div style="display:flex">
           <div>
             <img class="area-icon" src="@/assets/build.png" alt="">

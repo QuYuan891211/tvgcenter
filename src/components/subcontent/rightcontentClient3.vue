@@ -255,21 +255,22 @@ export default {
                 // this.initLineChart()
                 if ("100" == res.data.commonResultCode.code) {
                     this.all_ele_data_24 = res.data.buoyDataList;
+                    
                     this.reloadChart();
                 }
                 else if ("400" == res.data.commonResultCode.code) {
                     common.notification_error(res.data.commonResultCode.message);
-
+                    this.selected_time = [new Date(new Date().getTime() - 24 * 60 * 60 * 1000), new Date()],
                     this.reloadChart()
                 }
                 else if ("500" == res.data.commonResultCode.code) {
                     common.notification_warning(res.data.commonResultCode.message)
-
+                    this.selected_time = [new Date(new Date().getTime() - 24 * 60 * 60 * 1000), new Date()],
                     this.reloadChart()
                 }
                 else if ("600" == res.data.commonResultCode.code) {
                     common.notification_warning(res.data.commonResultCode.message)
-
+                    this.selected_time = [new Date(new Date().getTime() - 24 * 60 * 60 * 1000), new Date()],
                     this.reloadChart()
                 }
             });
