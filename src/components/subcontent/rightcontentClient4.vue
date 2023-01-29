@@ -48,6 +48,9 @@ export default {
             //观测数据信息
             data_arr_7:[],
             time_arr_7:[],
+            //第二要素
+            option_ele:[],
+            name_option_ele: null,
             unit:null,
             name_ele:null,
             default_time : 7,
@@ -84,6 +87,8 @@ export default {
             common.message_disable_function()
         },
         reloadChart(){
+            this.name_option_ele = null;
+            this.option_ele = [];
             //清空数组
             this.data_arr_7=[]
                         // alert(item.queryTime)
@@ -99,6 +104,12 @@ export default {
                         // alert(item.queryTime)
                         this.time_arr_7.push(this.all_ele_data_7[i].queryTime)
                         // alert('时间' + item.queryTime)
+
+                                        //假如最大波高曲线同时显示
+                        if("有效波高"== this.selected_ele){
+                            this.option_ele.push(common.getOptionalEleValue(this.selected_ele, this.all_ele_data_7[i]));
+                            this.name_option_ele = "最大波高";
+                        }
                     }
                     this.name_ele = this.selected_ele
                     // 重新加载图表
@@ -221,6 +232,40 @@ export default {
                         },
                         data: this.data_arr_7
                     },
+                    {
+                        name: this.name_option_ele,
+                        type: "line",
+                        // stack: "总量",
+                        areaStyle: {
+                            normal: {
+                                //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                        offset: 0,
+                                        color: "rgba(223,67,60,0.5)"
+                                    }, {
+                                        offset: 0.34,
+                                        color: "rgba(223,67,60,0.25)"
+                                    }, {
+                                        offset: 1,
+                                        color: "rgba(223,67,60,0.00)"
+                                    }])
+                            }
+                        },
+                        symbol: "none",
+                        smooth: true,
+                        emphasis: {
+                            focus: "series"
+                        },
+                        itemStyle: {
+                            normal: {
+                                lineStyle: {
+                                    color: "#df433c"
+                                }
+                            }
+                        },
+                        data: this.option_ele
+                        // data:[3,2,4,1,3]
+                    }
                 ],
                 animation: true,
                 animationThreshold: 2500,       // 动画元素阀值，产生的图形原素超过2500不出动画

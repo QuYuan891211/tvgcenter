@@ -115,6 +115,7 @@ export default {
     // }),
     data() {
         return {
+            
             //请求地址
             url_last_single_data: "http://localhost:8085/buoy/lastSingle",
             url_query_single_data: "http://localhost:8085/buoy/query",
@@ -123,8 +124,13 @@ export default {
             time_arr_24: [],
             unit: null,
             title:"最近24小时",
+            //第二要素
+            option_ele:[],
+           
+            name_option_ele: null,
             name_ele: null,
             default_time: 1,
+            last_selected_query_time:[new Date(new Date().getTime() - 24 * 60 * 60 * 1000), new Date()],
             selected_name: null,
             all_ele_data_24: null,
             selected_time: [new Date(new Date().getTime() - 24 * 60 * 60 * 1000), new Date()],
@@ -198,6 +204,7 @@ export default {
                     "name": "盐度"
                 }
             ],
+            
             // selected_ele:null,
             // date_format_str: 'dd HH',
             selected_ele: "有效波高" //有效波高
@@ -257,26 +264,29 @@ export default {
                     this.all_ele_data_24 = res.data.buoyDataList;
                     
                     this.reloadChart();
+                    this.last_selected_query_time = this.selected_time;
                 }
                 else if ("400" == res.data.commonResultCode.code) {
                     common.notification_error(res.data.commonResultCode.message);
-                    this.selected_time = [new Date(new Date().getTime() - 24 * 60 * 60 * 1000), new Date()],
+                    this.selected_time = this.last_selected_query_time,
                     this.reloadChart()
                 }
                 else if ("500" == res.data.commonResultCode.code) {
                     common.notification_warning(res.data.commonResultCode.message)
-                    this.selected_time = [new Date(new Date().getTime() - 24 * 60 * 60 * 1000), new Date()],
+                    this.selected_time = this.last_selected_query_time,
                     this.reloadChart()
                 }
                 else if ("600" == res.data.commonResultCode.code) {
                     common.notification_warning(res.data.commonResultCode.message)
-                    this.selected_time = [new Date(new Date().getTime() - 24 * 60 * 60 * 1000), new Date()],
+                    this.selected_time = this.last_selected_query_time,
                     this.reloadChart()
                 }
             });
 
         },
         reloadChart() {
+            this.name_option_ele = null;
+            this.option_ele = [];
             //清空数组
             this.data_arr_24 = [];
             // alert(item.queryTime)
@@ -292,6 +302,11 @@ export default {
                 // alert(item.queryTime)
                 this.time_arr_24.push(this.all_ele_data_24[i].queryTime);
                 // alert('时间' + item.queryTime)
+                //假如最大波高曲线同时显示
+                if("有效波高"== this.selected_ele){
+                    this.option_ele.push(common.getOptionalEleValue(this.selected_ele, this.all_ele_data_24[i]));
+                    this.name_option_ele = "最大波高";
+                }
             }
             this.name_ele = this.selected_ele;
             // 重新加载图表
@@ -429,6 +444,40 @@ export default {
                         },
                         data: this.data_arr_24
                     },
+                    {
+                        name: this.name_option_ele,
+                        type: "line",
+                        // stack: "总量",
+                        areaStyle: {
+                            normal: {
+                                //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                        offset: 0,
+                                        color: "rgba(223,67,60,0.5)"
+                                    }, {
+                                        offset: 0.34,
+                                        color: "rgba(223,67,60,0.25)"
+                                    }, {
+                                        offset: 1,
+                                        color: "rgba(223,67,60,0.00)"
+                                    }])
+                            }
+                        },
+                        symbol: "none",
+                        smooth: true,
+                        emphasis: {
+                            focus: "series"
+                        },
+                        itemStyle: {
+                            normal: {
+                                lineStyle: {
+                                    color: "#df433c"
+                                }
+                            }
+                        },
+                        data: this.option_ele
+                        // data:[3,2,4,1,3]
+                    }
                 ],
                 animation: true,
                 animationThreshold: 2500,

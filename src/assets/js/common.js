@@ -38,6 +38,12 @@ export default {
      
     // alert("测试，测试！！！")
 },
+getOptionalEleValue(name, item){
+   if('有效波高'==name){
+      //返回最大波高给optional_ele
+      return item.zbg
+   }
+},
 message_disable_function(){
    ElMessage({
       showClose: true,
