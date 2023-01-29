@@ -44,7 +44,7 @@ export default {
         return {
              //观测数据信息
             //请求地址
-            url_last_single_data:'http://128.5.9.127:8085/buoy/lastSingle',
+            url_last_single_data:'http://localhost:8085/buoy/lastSingle',
             //观测数据信息
             data_arr_30:[],
             time_arr_30:[],

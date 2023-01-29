@@ -28,7 +28,7 @@ export default {
                 { title: '地图复位' },
 
             ],
-            url_load_config : 'http://128.5.9.127:8085/config/all',
+            url_load_config : 'http://localhost:8085/config/all',
             map: null,
             point_icon_style_path:'./static/images/label/icon32.png',
             point_selected_icon_style_path:'./static/images/label/icon32_selected.png',
@@ -281,7 +281,7 @@ export default {
             //     name: "天地图影像图层",
             //     source: new ol.source.XYZ({
             //         // url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-            //         url:"http://128.5.9.127:8082/geoserver/observer/wms",
+            //         url:"http://localhost:8082/geoserver/observer/wms",
             //         params:{
             //             LAYERS:"observer:geotools_coverage"
             //         },
@@ -293,7 +293,7 @@ export default {
                 name: "高德影像图层",
                 source: new ol.source.TileWMS({
                     // url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-                    url:"http://128.5.9.127:8082/geoserver/observer/wms",
+                    url:"http://localhost:8082/geoserver/observer/wms",
                     params:{
                         'FORMAT': 'image/png',
                         'VERSION': '1.1.1',
