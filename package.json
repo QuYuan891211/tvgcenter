@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "webpack",
+    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -19,10 +19,7 @@
     "vue": "^3.2.13",
     "vue-bus": "^1.2.1",
     "vue-router": "^4.1.3",
-    "vuex": "^4.1.0",
-    "vx-easyui": "^1.2.50",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -36,8 +33,8 @@
     "less": "^4.1.3",
     "less-loader": "^11.1.0",
     "unplugin-auto-import": "^0.12.1",
-    "unplugin-vue-components": "^0.22.12",
-    "webpack": "^3.6.0"
+    "unplugin-vue-components": "^0.22.12"
+
   },
   "eslintConfig": {
     "root": true,

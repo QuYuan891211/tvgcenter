@@ -116,8 +116,8 @@ export default {
     data() {
         return {
             //请求地址
-            url_last_single_data: "http://localhost:8085/buoy/lastSingle",
-            url_query_single_data: "http://localhost:8085/buoy/query",
+            url_last_single_data: "http://128.5.9.127:8085/buoy/lastSingle",
+            url_query_single_data: "http://128.5.9.127:8085/buoy/query",
             //观测数据信息
             data_arr_24: [],
             time_arr_24: [],
