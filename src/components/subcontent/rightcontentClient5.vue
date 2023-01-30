@@ -213,7 +213,7 @@ export default {
                                         {
                         name: this.name_option_ele,
                         type: "line",
-                        stack: "总量",
+                        // stack: "总量",
                         areaStyle: {
                             normal: {
                                 //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上

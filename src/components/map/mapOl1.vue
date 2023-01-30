@@ -281,7 +281,7 @@ export default {
             //     name: "天地图影像图层",
             //     source: new ol.source.XYZ({
             //         // url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-            //         url:"http://localhost:8082/geoserver/observer/wms",
+            //         url:"http://128.5.7.127:8082/geoserver/observer/wms",
             //         params:{
             //             LAYERS:"observer:geotools_coverage"
             //         },
