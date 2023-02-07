@@ -2,7 +2,7 @@
     <div class="top-bar fromTop" style="{ top: 8% }">
         <div class="top-bar-left d-flex j-end a-center">
             <!-- <img src="@/assets/top_title.png" alt=""> -->
-            <img class="logo" src="@/assets/nmefclogo.png" alt="">
+            <!-- <img class="logo" src="@/assets/nmefclogo.png" alt=""> -->
             <text class="title">海洋观测系统数字化平台</text>
         </div>
         <div class="top-bar-right d-flex j-end a-center">
@@ -295,5 +295,8 @@ stretch（默认值）：如果项目未设置高度或设为auto，将占满整
 
 .a-self-baseline {
     align-self: baseline;
+}
+.title{
+    margin-left: 3px;
 }
 </style>

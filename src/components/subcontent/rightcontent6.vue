@@ -23,10 +23,13 @@
 
         >
         <el-table-column class="last-data-table-column"  align="center" prop="site" label="名称" />
-    <el-table-column class="last-data-table-column" align="center" prop="queryTime" label="时间" />
-    <el-table-column class="last-data-table-column" align="center" prop="ybg" label="有效波高（米）" />
-    <el-table-column class="last-data-table-column" align="center" prop="zbg" label="最大波高（米）" />
-    <el-table-column class="last-data-table-column" align="center" prop="ws" label="风速（米每秒）" />
+    <el-table-column class="last-data-table-column-time" align="center" prop="queryTime" label="时间" />
+    <el-table-column class="last-data-table-column" align="center" prop="ybg" label="有效波高" />
+    <el-table-column class="last-data-table-column" align="center" prop="zbg" label="最大波高" />
+    <el-table-column class="last-data-table-column" align="center" prop="yzq" label="有效波周期" />
+    <el-table-column class="last-data-table-column" align="center" prop="bx" label="波向" />
+
+    <el-table-column class="last-data-table-column" align="center" prop="ws" label="风速" />
     <el-table-column class="last-data-table-column" align="center" prop="wd" label="风向"/>
     
   </el-table>
@@ -76,6 +79,9 @@ export default {
             // this.initLineChart()
             if(100 == res.data.commonResultCode.code){
             this.last_all_data = res.data.buoyDataList
+            for(var i = 0;i<this.last_all_data.length;i++){
+                this.last_all_data[i].queryTime = this.last_all_data[i].queryTime.substring(0,16);
+            }
             // bus.emit('lastAll', this.last_all_data);
             }else if ("400" == res.data.commonResultCode.code) {
                     common.notification_error(res.data.commonResultCode.message);
@@ -86,7 +92,7 @@ export default {
 
             })
             },
-        //取得就业率柱状图数据
+        
         getBarChart() {
             //获取数值
             this.data_wave = [0.7, 0.4, 0.8, 1.7, 1.9, 1.1, 0, 1.6];
@@ -367,4 +373,12 @@ background-color: transparent;
   /* color: #f19944;  */
 
 }
+/* .last-data-table-column-time{
+    width: 10%;
+    
+}
+.last-data-table-column{
+    width: 5%;
+    
+} */
 </style>
