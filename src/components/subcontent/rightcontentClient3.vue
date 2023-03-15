@@ -482,7 +482,7 @@ export default {
                 animation: true,
                 animationThreshold: 2500,
                 addDataAnimation: true,
-                animationDuration: 1000,
+                animationDuration: 200,
                 animationEasing: "cubicInOut"
             };
             // 使用刚指定的配置项和数据显示图表。
