@@ -36,6 +36,8 @@
                 type="datetime"
                 placeholder="选择时间"
                 @change="handleDateChange"
+                :default-value = this.default_dateTimePicker_time
+                @visible-change="visible_change($event)"
                 format = "MM-DD HH"
                 style="width:105px"
                 :clearable = false
@@ -62,6 +64,7 @@
 </template>
 <script>
 import { ref } from 'vue'
+import { allGeneratedPositionsFor } from '_@jridgewell_trace-mapping@0.3.17@@jridgewell/trace-mapping'
 import common from '../../assets/js/common'
 export default {
     name: 'subContent6',
@@ -74,10 +77,20 @@ export default {
             default_time:31,
             last_all_data:[],
             // value1 : ref('')
-            select_time : ''
+            select_time : '',
+            default_dateTimePicker_time:null
         }
     },
     methods: {
+        visible_change(callback){
+            if(callback){
+                // alert('open')
+                this.select_time = this.default_dateTimePicker_time
+            }
+        },
+        // datetimepicker_visible_change(){
+        //     alert('1')
+        // },
         handleDateChange(){
             this.getQueryAllData()
         },
@@ -275,7 +288,19 @@ export default {
             myChart.setOption(option)
         },
     },
+    created(){
+        // var systemTime = new Date();
+
+        // this.default_dateTimePicker_time = new Date(systemTime.getFullYear(),systemTime.getMonth()+1,systemTime.getDate,8,0,0)
+        this.default_dateTimePicker_time = new Date()
+        this.default_dateTimePicker_time.setHours(8)
+        this.default_dateTimePicker_time.setMinutes(0)
+        this.default_dateTimePicker_time.setSeconds(0)
+        this.default_dateTimePicker_time.setMilliseconds(0)
+        
+    },
     mounted() {
+        // alert(this.default_dateTimePicker_time)
         this.getLastAllData()
         // this.getBarChart();
     },
