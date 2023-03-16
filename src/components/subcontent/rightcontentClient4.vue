@@ -102,7 +102,7 @@ export default {
                         // this.data_arr_7 = this.all_ele_data_7
                         this.data_arr_7.push(common.getSigleEleValue(this.selected_ele, this.all_ele_data_7[i]))
                         // alert(item.queryTime)
-                        this.time_arr_7.push(this.all_ele_data_7[i].queryTime)
+                        this.time_arr_7.push(this.all_ele_data_7[i].queryTime.substring(5,13))
                         // alert('时间' + item.queryTime)
 
                                         //假如最大波高曲线同时显示

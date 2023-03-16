@@ -23,7 +23,27 @@
 
         >
         <el-table-column class="last-data-table-column"  align="center" prop="site" label="名称" />
-    <el-table-column class="last-data-table-column-time" align="center" prop="queryTime" label="时间" />
+    <!-- <el-table-column class="last-data-table-column-time" align="center" prop="queryTime" label="时间"/> -->
+    <el-table-column class="last-data-table-column-time" align="center" prop="queryTime">
+        <!-- <el-button type="success" icon="el-icon-check" size="small" plain @click="select_time">
+              一键通过
+            </el-button> -->
+            <!-- 加入历史查看功能 -->
+            <template #header>
+
+            <el-date-picker
+                v-model="this.select_time"
+                type="datetime"
+                placeholder="选择时间"
+                @change="handleDateChange"
+                format = "MM-DD HH"
+                style="width:105px"
+                :clearable = false
+                :editable=false
+            />
+             </template>
+    </el-table-column>
+
     <el-table-column class="last-data-table-column" align="center" prop="ybg" label="有效波高" />
     <el-table-column class="last-data-table-column" align="center" prop="zbg" label="最大波高" />
     <el-table-column class="last-data-table-column" align="center" prop="yzq" label="有效波周期" />
@@ -41,17 +61,29 @@
     </div>
 </template>
 <script>
+import { ref } from 'vue'
+import common from '../../assets/js/common'
 export default {
     name: 'subContent6',
+   
     data() {
         return {
             url_last_data : 'http://localhost:8085/buoy/filterlastAll',
+            url_query_data: 'http://localhost:8085/buoy/queryAll',
             data_wave:null,
             default_time:31,
-            last_all_data:[]
+            last_all_data:[],
+            // value1 : ref('')
+            select_time : ''
         }
     },
     methods: {
+        handleDateChange(){
+            this.getQueryAllData()
+        },
+        // select_time(){
+        //     alert("select")
+        // },
         tableRowClassName(val){
             if(val.row.ybg >= 2.5 && val.row.ybg < 3.5){
                 return 'blue-level-bg'
@@ -64,9 +96,38 @@ export default {
             }
             return 'normal-bg'
         },
+        getQueryAllData(){
+
+            axios(
+            {
+            method: 'get',//提交方法
+            url: this.url_query_data,//提交地址
+            params: {//提交参数
+            // name:this.selected_name,
+            time:this.select_time
+            }}).then((res) => {
+            // console.log('30天' + res.data.buoyDataList[0].site)
+            // this.initLineChart()
+            if(100 == res.data.commonResultCode.code){
+            this.last_all_data = res.data.buoyDataList
+            for(var i = 0;i<this.last_all_data.length;i++){
+                this.last_all_data[i].queryTime = this.last_all_data[i].queryTime.substring(0,13);
+            }
+            // bus.emit('lastAll', this.last_all_data);
+            }else if ("400" == res.data.commonResultCode.code) {
+                    common.notification_error(res.data.commonResultCode.message);
+                    this.select_time = ''
+                }
+                else{
+                    common.notification_warning(res.data.commonResultCode.message);
+                    this.select_time = ''
+                }
+
+            })
+        },
         getLastAllData(){
 
-            //发送请求，获取选中浮标的最近30天数据
+
                     axios(
             {
             method: 'get',//提交方法
@@ -80,7 +141,7 @@ export default {
             if(100 == res.data.commonResultCode.code){
             this.last_all_data = res.data.buoyDataList
             for(var i = 0;i<this.last_all_data.length;i++){
-                this.last_all_data[i].queryTime = this.last_all_data[i].queryTime.substring(0,16);
+                this.last_all_data[i].queryTime = this.last_all_data[i].queryTime.substring(0,13);
             }
             // bus.emit('lastAll', this.last_all_data);
             }else if ("400" == res.data.commonResultCode.code) {
@@ -373,6 +434,20 @@ background-color: transparent;
   /* color: #f19944;  */
 
 }
+
+.el-time-spinner__wrapper{
+
+  width: 100% !important;
+
+}
+
+.el-scrollbar:nth-of-type(2){
+
+  display: none;
+
+}
+
+
 /* .last-data-table-column-time{
     width: 10%;
     
