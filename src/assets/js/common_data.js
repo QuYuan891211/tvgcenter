@@ -1,9 +1,4 @@
-
-export default {    
-    data(){
-        return{
-            
-        }
-    }
-
+let baseurl = 'localhost'
+export {
+    baseurl
 }

@@ -17,6 +17,7 @@
 import { tsThisType } from '@babel/types';
 // import { ol } from 'dist/static/libs/ol5/ol';
 import bus from '../../utils'
+import {baseurl} from '../../assets/js/common_data'
 // import MousePosition from "ol/control/MousePosition";
 // import { format } from "ol/coordinate";
 
@@ -28,7 +29,7 @@ export default {
                 { title: '地图复位' },
 
             ],
-            url_load_config : 'http://localhost:8085/config/all',
+            url_load_config : 'http://' + baseurl + ':8085/config/all',
             map: null,
             point_icon_style_path:'./static/images/label/icon32.png',
             point_selected_icon_style_path:'./static/images/label/icon32_selected.png',

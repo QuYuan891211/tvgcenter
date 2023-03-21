@@ -39,12 +39,7 @@
 </template>
 
 <script>
-/**
- * 1、中大货招2021-643中山大学国内采购合同_短周期地震仪（70套）
-2、山东山盾物联科技有限公司设备购销合同（100套）
-3、节点地震仪采购项目（广东省地质物探工程勘察院60套）
- 4、兰州大学节点地震仪监测系统5套
- */
+import {baseurl}  from '../../assets/js/common_data'
 export default {
     name: 'subContent6',
     data() {

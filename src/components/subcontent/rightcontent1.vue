@@ -32,11 +32,12 @@
 </template>
 
 <script>
+import {baseurl}  from '../../assets/js/common_data'
 export default {
     name: 'subContent4',
     data() {
         return {
-            url_data_statist:'http://localhost:8085/buoy/statistics',
+            url_data_statist:'http://' + baseurl + ':8085/buoy/statistics',
             success_num:null
         }
     },

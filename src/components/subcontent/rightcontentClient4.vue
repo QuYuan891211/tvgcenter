@@ -38,13 +38,14 @@
 <script>
 import bus from '../../utils'
 import common from '../../assets/js/common'
+import {baseurl}  from '../../assets/js/common_data'
 export default {
     name: 'subContent6',
     data() {
         return {
             //请求地址
             // echarts_id : 'lineChartClient_7',
-            url_last_single_data:'http://localhost:8085/buoy/lastSingle',
+            url_last_single_data:'http://'+ baseurl + ':8085/buoy/lastSingle',
             //观测数据信息
             data_arr_7:[],
             time_arr_7:[],

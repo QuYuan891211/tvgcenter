@@ -66,13 +66,14 @@
 import { ref } from 'vue'
 import { allGeneratedPositionsFor } from '_@jridgewell_trace-mapping@0.3.17@@jridgewell/trace-mapping'
 import common from '../../assets/js/common'
+import {baseurl}  from '../../assets/js/common_data'
 export default {
     name: 'subContent6',
    
     data() {
         return {
-            url_last_data : 'http://localhost:8085/buoy/filterlastAll',
-            url_query_data: 'http://localhost:8085/buoy/queryAll',
+            url_last_data : 'http://'+ baseurl+':8085/buoy/filterlastAll',
+            url_query_data: 'http://'+ baseurl+':8085/buoy/queryAll',
             data_wave:null,
             default_time:31,
             last_all_data:[],
