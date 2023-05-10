@@ -68,7 +68,7 @@ export default {
             image: new ol.style.Icon(
                 /** @type {olx.style.IconOptions} */
                 ({
-                    anchor: [0.5, 30],
+                    anchor: [0.5, 35],
                     anchorOrigin: 'top-right',
                     anchorXUnits: 'fraction',
                     anchorYUnits: 'pixels',
