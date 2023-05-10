@@ -17,7 +17,7 @@
 import { tsThisType } from '@babel/types';
 // import { ol } from 'dist/static/libs/ol5/ol';
 import bus from '../../utils'
-import {baseurl} from '../../assets/js/common_data'
+import {baseurl,GaodeMap_img_wms,TiandiMap_img,TiandiMap_cia,TiandiMap_vec,TiandiMap_cva} from '../../assets/js/common_data'
 // import MousePosition from "ol/control/MousePosition";
 // import { format } from "ol/coordinate";
 
@@ -52,7 +52,7 @@ export default {
         // this.initBuoyData();
         this.initMap();
         this.initMarker();
-        
+        this.load_port_info();
     },
     methods: {
         /**
@@ -131,6 +131,7 @@ export default {
             });
             this.map.addLayer(vectorLayer);
             
+            this.initMarker_port();
             /**
         * 为map添加点击事件监听,渲染弹出popup
         */
@@ -150,8 +151,11 @@ export default {
 
                     var layers_collection =  vm.map.getLayers()
                     var layers_arrays = layers_collection.getArray()
-                    // console.log('获取layers长度'+layers_arrays.length)
-                    var target_layer = layers_arrays[1]
+                    // console.log('获取layers长度'+layers_arrays.length
+
+                    //[TO-DO]切换在线和离线地图时，要修改图层编号
+                    var target_layer = layers_arrays[2]
+
                     // console.log('获取layers长度'+layers_arrays.length)
                     var source = target_layer.getSource()
                     var features = source.getFeatures()
@@ -214,6 +218,16 @@ export default {
             this.$emit("getSelectedNameByCh",name)
 
         },
+        load_port_info(){
+            axios.get('/static/data/portjson/port.json')
+                .then((data) => {
+                console.log(data)
+   
+                })
+        },
+        initMarker_port(){
+
+        },
         initFeature(vectorSource){
             axios(
                 {method: 'get',//提交方法
@@ -262,69 +276,21 @@ export default {
 
         },
         initMap() {
-            // var TiandiMap_vec = new ol.layer.Tile({
-            //     name: "天地图矢量图层",
-            //     source: new ol.source.XYZ({
-            //         url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-            //         wrapX: false
-            //     }),
-            //     preload:Infinity
-            // });
-            // var TiandiMap_cva = new ol.layer.Tile({
-            //     name: "天地图矢量注记图层",
-            //     source: new ol.source.XYZ({
-            //         url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-            //         wrapX: false
-            //     }),
-            //     preload:Infinity
-            // });
-            // var TiandiMap_img = new ol.layer.Tile({
-            //     name: "天地图影像图层",
-            //     source: new ol.source.XYZ({
-            //         // url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-            //         url:"http://128.5.7.127:8082/geoserver/observer/wms",
-            //         params:{
-            //             LAYERS:"observer:geotools_coverage"
-            //         },
-            //         wrapX: false
-            //     }),
-            //     preload:Infinity
-            // });
-            var GaodeMap_img = new ol.layer.Tile({
-                name: "高德影像图层",
-                source: new ol.source.TileWMS({
-                    // url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-                    url:"http://localhost:8082/geoserver/observer/wms",
-                    params:{
-                        'FORMAT': 'image/png',
-                        'VERSION': '1.1.1',
-                        tiled: true,
-                        STYLES: '',
-                        LAYERS:"observer:gaode_part_imgAndMark"
-                    },
-                    wrapX: false
-                }),
-                preload:Infinity
-            });
-            // var TiandiMap_cia = new ol.layer.Tile({
-            //     name: "天地图影像注记图层",
-            //     source: new ol.source.XYZ({
-            //         url: "http://t0.tianditu.com/DataServer?T=cia_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-            //         wrapX: false
-            //     }),
-            //     preload:Infinity
-            // });
+
 
             //实例化Map对象加载地图
             this.map = new ol.Map({
                 //地图容器div的ID
                 target: 'olMap',
-                layers: [GaodeMap_img],
+                // layers: [GaodeMap_img],
                 // layers: [TiandiMap_img],
-                //地图容器中加载的图层:加载影像图
+
+                //地图容器中加载的图层:加载影像图(开发环境)
                 // layers: [TiandiMap_img, TiandiMap_cia],
-                //地图容器中加载的图层:加载矢量图层
-                // layers: [TiandiMap_vec, TiandiMap_cva],
+
+
+                //地图容器中加载的图层:加载矢量图层(开发环境)
+                layers: [TiandiMap_vec, TiandiMap_cva],
                 //地图视图设置
                 view: new ol.View({
                     //地图初始中心点
