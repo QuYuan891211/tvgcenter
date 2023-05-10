@@ -18,6 +18,7 @@ import { tsThisType } from '@babel/types';
 // import { ol } from 'dist/static/libs/ol5/ol';
 import bus from '../../utils'
 import {baseurl,GaodeMap_img_wms,TiandiMap_img,TiandiMap_cia,TiandiMap_vec,TiandiMap_cva} from '../../assets/js/common_data'
+import port from '../../assets/js/port'
 // import MousePosition from "ol/control/MousePosition";
 // import { format } from "ol/coordinate";
 
@@ -31,8 +32,12 @@ export default {
             ],
             url_load_config : 'http://' + baseurl + ':8085/config/all',
             map: null,
+
             point_icon_style_path:'./static/images/label/icon32.png',
             point_selected_icon_style_path:'./static/images/label/icon32_selected.png',
+            point_port_style_path:'./static/images/label/port_icon32_blue.png',
+            point_port_data_path:'/static/data/portjson/port_v2.json',
+
             parser: null,
             select_id:null,
             //map中的图层数组
@@ -52,9 +57,15 @@ export default {
         // this.initBuoyData();
         this.initMap();
         this.initMarker();
-        this.load_port_info();
+        this.initMarker_port()
+
     },
     methods: {
+        //加载港口图标
+        initMarker_port(){
+            this.map = port.initMarker_port(this.map, this.point_port_data_path, this.point_port_style_path)
+        },
+        
         /**
             * 创建矢量标注样式函数,设置image为图标ol.style.Icon
             * @param {ol.Feature} feature 要素
@@ -131,7 +142,7 @@ export default {
             });
             this.map.addLayer(vectorLayer);
             
-            this.initMarker_port();
+            // this.initMarker_port();
             /**
         * 为map添加点击事件监听,渲染弹出popup
         */
@@ -218,16 +229,8 @@ export default {
             this.$emit("getSelectedNameByCh",name)
 
         },
-        load_port_info(){
-            axios.get('/static/data/portjson/port.json')
-                .then((data) => {
-                console.log(data)
-   
-                })
-        },
-        initMarker_port(){
 
-        },
+
         initFeature(vectorSource){
             axios(
                 {method: 'get',//提交方法
@@ -286,11 +289,11 @@ export default {
                 // layers: [TiandiMap_img],
 
                 //地图容器中加载的图层:加载影像图(开发环境)
-                // layers: [TiandiMap_img, TiandiMap_cia],
+                layers: [TiandiMap_img, TiandiMap_cia],
 
 
                 //地图容器中加载的图层:加载矢量图层(开发环境)
-                layers: [TiandiMap_vec, TiandiMap_cva],
+                // layers: [TiandiMap_vec, TiandiMap_cva],
                 //地图视图设置
                 view: new ol.View({
                     //地图初始中心点

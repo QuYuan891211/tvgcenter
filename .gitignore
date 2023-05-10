@@ -22,3 +22,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 public/static/data/portjson/port.json
+public/static/data/portjson/port_v2.json
