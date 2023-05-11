@@ -1,3 +1,4 @@
+// let baseurl = '128.5.7.127'
 let baseurl = 'localhost'
 
             let TiandiMap_vec = new ol.layer.Tile({
@@ -22,7 +23,7 @@ let baseurl = 'localhost'
                 name: "天地图栅格图层",
                 source: new ol.source.XYZ({
                     url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-                    // url:"http://128.5.7.127:8082/geoserver/observer/wms",
+                    // url:"http://" + baseurl + ":8082/geoserver/observer/wms",
                     // params:{
                     //     LAYERS:"observer:geotools_coverage"
                     // },
@@ -45,7 +46,7 @@ let baseurl = 'localhost'
                 name: "高德影像图层_自建地图引擎",
                 source: new ol.source.TileWMS({
                     // url: "http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=cd7516c53e2e5bee9bad989b63db6ce4",
-                    url:"http://localhost:8082/geoserver/observer/wms",
+                    url:"http://" + baseurl + ":8082/geoserver/observer/wms",
                     params:{
                         'FORMAT': 'image/png',
                         'VERSION': '1.1.1',

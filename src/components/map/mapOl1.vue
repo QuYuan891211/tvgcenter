@@ -172,8 +172,13 @@ export default {
                         var layers_arrays = layers_collection.getArray()
                         // console.log('获取layers长度'+layers_arrays.length
 
-                        //[TO-DO]切换在线和离线地图时，要修改图层编号
+                        //[TO-DO]生产环境需注释（图层比开发环境少1）
                         var target_layer = layers_arrays[2]
+
+                        //[TO-DO]生产环境需取消注释（图层比开发环境少1）
+                        // var target_layer = layers_arrays[1]
+                      
+
                         // console.log(target_layer)
                         // console.log('获取layers长度'+layers_arrays.length)
                         var source = target_layer.getSource()
@@ -294,8 +299,10 @@ export default {
             this.map = new ol.Map({
                 //地图容器div的ID
                 target: 'olMap',
-                // layers: [GaodeMap_img],
-                // layers: [TiandiMap_img],
+
+                //地图容器中加载的图层:加载影像图(生产环境)
+                // layers: [GaodeMap_img_wms],
+
 
                 //地图容器中加载的图层:加载影像图(开发环境)
                 layers: [TiandiMap_img, TiandiMap_cia],
