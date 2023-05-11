@@ -23,7 +23,7 @@ export default {
 
                 
                 var portList = res.data
-                console.log(portList)
+                // console.log(portList)
                 // alert(portList.length)
             for (var i = 0; i < portList.length; i++) {
                 sum += 1
@@ -40,6 +40,7 @@ export default {
                     geometry: new ol.geom.Point(point),
                     //名称属性
                     name: name,
+                    id: 0
                 });
                 // console.log(iconFeature)
                 iconFeature.setStyle(this.createLabelStyle_port(iconFeature,icon_path));
@@ -54,7 +55,9 @@ export default {
         //5. 创建矢量标注图层
         var vectorLayer = new ol.layer.Vector({
             source: vectorSource,
-            name:'港口点位矢量图层'
+            name:'港口点位矢量图层',
+            visible:false
+
         });
         
         map.addLayer(vectorLayer);
@@ -99,4 +102,23 @@ export default {
             })
         });
     },
+    //港口图标显隐
+    setInvisibility(map, isVisible){
+        var layers = map.getLayers(); //获取地图中所有图层
+        // console.log(layers)
+        for (var i = 0; i < layers.getLength(); i++) {
+            var layer_name = layers.item(i).get('name');
+            if ( '港口点位矢量图层' == layer_name ){
+                //判断图层当前状态是否可见
+                if(layers.item(i).getVisible()){
+                    layers.item(i).setVisible(false); //不显示图层
+                }else{
+                    layers.item(i).setVisible(true);//显示图层
+                }
+                break;
+            }
+        }
+    },
+
+    
 }

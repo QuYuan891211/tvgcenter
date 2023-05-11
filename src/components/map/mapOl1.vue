@@ -18,6 +18,7 @@ import { tsThisType } from '@babel/types';
 // import { ol } from 'dist/static/libs/ol5/ol';
 import bus from '../../utils'
 import {baseurl,GaodeMap_img_wms,TiandiMap_img,TiandiMap_cia,TiandiMap_vec,TiandiMap_cva} from '../../assets/js/common_data'
+import {mousePositionControl} from '../../assets/js/map_control_tool'
 import port from '../../assets/js/port'
 // import MousePosition from "ol/control/MousePosition";
 // import { format } from "ol/coordinate";
@@ -28,6 +29,7 @@ export default {
              // 菜单栏数据
              menus: [
                 { title: '地图复位' },
+                { title: '港口显隐'}
 
             ],
             url_load_config : 'http://' + baseurl + ':8085/config/all',
@@ -61,6 +63,10 @@ export default {
 
     },
     methods: {
+        //港口点位显隐按钮
+        portLayerVisibilityControl(){
+            port.setInvisibility(this.map)
+        },
         //加载港口图标
         initMarker_port(){
             this.map = port.initMarker_port(this.map, this.point_port_data_path, this.point_port_style_path)
@@ -159,40 +165,43 @@ export default {
                 //判断当前单击处是否有要素,捕获到要素时弹出popup
                 var feature = this.forEachFeatureAtPixel(evt.pixel, function (feature, layer) { return feature; });
                 if (feature) {
+                    //关键一步，通过ID判断是否可被选中
+                    if(0 != feature.getProperties().id){
+                            // console.log(feature)
+                        var layers_collection =  vm.map.getLayers()
+                        var layers_arrays = layers_collection.getArray()
+                        // console.log('获取layers长度'+layers_arrays.length
 
-                    var layers_collection =  vm.map.getLayers()
-                    var layers_arrays = layers_collection.getArray()
-                    // console.log('获取layers长度'+layers_arrays.length
+                        //[TO-DO]切换在线和离线地图时，要修改图层编号
+                        var target_layer = layers_arrays[2]
+                        // console.log(target_layer)
+                        // console.log('获取layers长度'+layers_arrays.length)
+                        var source = target_layer.getSource()
+                        var features = source.getFeatures()
+                        // vm.initFeature()
+                        for(var i=0; i< features.length;i++){
+                            features[i].setStyle(vm.createLabelStyle(features[i],false));
+                        }
+                        // var targetLayer = layers.get
 
-                    //[TO-DO]切换在线和离线地图时，要修改图层编号
-                    var target_layer = layers_arrays[2]
 
-                    // console.log('获取layers长度'+layers_arrays.length)
-                    var source = target_layer.getSource()
-                    var features = source.getFeatures()
-                    // vm.initFeature()
-                    for(var i=0; i< features.length;i++){
-                        features[i].setStyle(vm.createLabelStyle(features[i],false));
+                        // var sources = layers[2].getSource
+                        // console.log('获取sources长度'+sources.length)
+                        //var coor=features[0].getGeometry().getCoordinates();
+                        //var property=features[0].getProperties();
+                        //var type=features[0].getGeometry().getType();
+                        // console.log(feature.getStyle.getImage)
+                        var name = feature.getProperties().name
+                        // vm.selected_name = name
+                        //向公共组件传选择的名称
+                        // vm.sendSelectedNameToFa(name)
+                        bus.emit('select_feature', name );
+                        // bus.emit('select_feature_7', name );
+                        // bus.emit('select_feature_30', name );
+                        vm.updateSelectClientInfo(name)
+                        // vm.initMarker()
+                        feature.setStyle(vm.createLabelStyle(feature,true));
                     }
-                    // var targetLayer = layers.get
-
-
-                    // var sources = layers[2].getSource
-                    // console.log('获取sources长度'+sources.length)
-                    //var coor=features[0].getGeometry().getCoordinates();
-                    //var property=features[0].getProperties();
-                    //var type=features[0].getGeometry().getType();
-                    // console.log(feature.getStyle.getImage)
-                    var name = feature.getProperties().name
-                    // vm.selected_name = name
-                    //向公共组件传选择的名称
-                    // vm.sendSelectedNameToFa(name)
-                    bus.emit('select_feature', name );
-                    // bus.emit('select_feature_7', name );
-                    // bus.emit('select_feature_30', name );
-                    vm.updateSelectClientInfo(name)
-                    // vm.initMarker()
-                    feature.setStyle(vm.createLabelStyle(feature,true));
                     
                 } else {
                     
@@ -327,20 +336,20 @@ export default {
             //比例尺控件
             this.map.addControl(new ol.control.ScaleLine());
              //鼠标坐标控件
-            var mousePositionControl = new ol.control.MousePosition({
-            //坐标格式
-            coordinateFormat: function (coordinate) {
-                return ol.coordinate.format(coordinate, "经度:{x} &nbsp; 纬度:{y}", 2);
-            },
-            //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
-            projection: "EPSG:4326",
-            //坐标信息显示样式类名,默认是'ol-mouse-position'
-            className: "custom-mouse-position",
-            //显示鼠标位置信息的目标容器
-            target: document.getElementById("mouse-position"),
-            //未定义坐标的标记
-            undefinedHTML: "&nbsp;",
-        });
+        //     var mousePositionControl = new ol.control.MousePosition({
+        //     //坐标格式
+        //     coordinateFormat: function (coordinate) {
+        //         return ol.coordinate.format(coordinate, "经度:{x} &nbsp; 纬度:{y}", 2);
+        //     },
+        //     //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
+        //     projection: "EPSG:4326",
+        //     //坐标信息显示样式类名,默认是'ol-mouse-position'
+        //     className: "custom-mouse-position",
+        //     //显示鼠标位置信息的目标容器
+        //     target: document.getElementById("mouse-position"),
+        //     //未定义坐标的标记
+        //     undefinedHTML: "&nbsp;",
+        // });
             this.map.addControl(mousePositionControl);
             var view = this.map.getView()
             var zoom = view.getZoom()
@@ -358,12 +367,13 @@ export default {
         selectMenu(index){
             switch (index){
             case 0:
-            this.moveToChinaSea()  // 当表达式的结果等于 0 时,则执行该代码
-             break;
-                
+                this.moveToChinaSea()  // 当表达式的结果等于 0 时,则执行该代码
+                break;
+            case 1:
+                port.setInvisibility(this.map)
 
             default :
-            this.moveToChinaSea()  // 如果没有与表达式相同的值,则执行该代码
+            // this.moveToChinaSea()  // 如果没有与表达式相同的值,则执行该代码
 }
         },
         moveToChinaSea(){
@@ -389,17 +399,23 @@ export default {
     display:none;
 }
 .left-tool-bar {
+    display: flex;
     position: absolute;
+    justify-content: flex-start;
+    flex-direction:row;
     /* left:0; */
     top: 100px;
     z-index: 5;
     /* pointer-events: none; */
 }
 .left-tool-bar .menus-item {
+
+
     width: 144px;
     height: 49px;
     font-size: 18px;
     line-height: 55px;
+    margin-left: 20px;
     margin-bottom: 49px;
     cursor: pointer;
 }
