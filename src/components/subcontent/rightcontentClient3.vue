@@ -77,7 +77,7 @@
 import bus from '../../utils'
 import common from '../../assets/js/common'
 import {baseurl}  from '../../assets/js/common_data'
-
+import {markline_observe_wave,markline_observe_wind} from '../../assets/js/echart_style_observe'
 // import { Search } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import { Download, Search, Sort, Switch } from '@element-plus/icons-vue'
@@ -128,7 +128,8 @@ export default {
             title:"最近24小时",
             //第二要素
             option_ele:[],
-           
+            // markline:markline_observe_null,
+            markline:null,
             name_option_ele: null,
             name_ele: null,
             default_time: 1,
@@ -287,6 +288,7 @@ export default {
 
         },
         reloadChart() {
+            this.markline = null;
             this.name_option_ele = null;
             this.option_ele = [];
             //清空数组
@@ -306,8 +308,12 @@ export default {
                 // alert('时间' + item.queryTime)
                 //假如最大波高曲线同时显示
                 if("有效波高"== this.selected_ele){
+                    this.markline = markline_observe_wave
                     this.option_ele.push(common.getOptionalEleValue(this.selected_ele, this.all_ele_data_24[i]));
                     this.name_option_ele = "最大波高";
+                }
+                if("风速" == this.selected_ele){
+                    this.markline = markline_observe_wind
                 }
             }
             this.name_ele = this.selected_ele;
@@ -444,7 +450,8 @@ export default {
                                 }
                             }
                         },
-                        data: this.data_arr_24
+                        data: this.data_arr_24,
+                        markLine: this.markline
                     },
                     {
                         name: this.name_option_ele,

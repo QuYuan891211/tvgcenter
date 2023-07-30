@@ -38,6 +38,7 @@
 <script>
 import bus from '../../utils'
 import common from '../../assets/js/common'
+import {markline_observe_wave,markline_observe_wind} from '../../assets/js/echart_style_observe'
 import {baseurl}  from '../../assets/js/common_data'
 export default {
     name: 'subContent7',
@@ -56,6 +57,8 @@ export default {
             title:"最近1月",
             name_ele:null,
             default_time : 31,
+            // markline:markline_observe_null,
+            markline:null,
             selected_name:null,
             all_ele_data_30:null,
             // date_format_str: 'dd HH',
@@ -86,6 +89,7 @@ export default {
             common.message_disable_function()
         },
         reloadChart(){
+            this.markline = null;
             this.name_option_ele = null;
             this.option_ele = [];
                     //清空数组
@@ -106,9 +110,13 @@ export default {
 
                          //假如最大波高曲线同时显示
                         if("有效波高"== this.selected_ele){
+                        this.markline = markline_observe_wave
                         this.option_ele.push(common.getOptionalEleValue(this.selected_ele, this.all_ele_data_30[i]));
                         this.name_option_ele = "最大波高";
                         }
+                        if("风速" == this.selected_ele){
+                    this.markline = markline_observe_wind
+                }
                     }
                     this.name_ele = this.selected_ele
                     // 重新加载图表
@@ -209,7 +217,8 @@ export default {
                                 }
                             }
                         },
-                        data: this.data_arr_30
+                        data: this.data_arr_30,
+                        markLine: this.markline
                     },
                                         {
                         name: this.name_option_ele,

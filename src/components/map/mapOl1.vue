@@ -17,7 +17,7 @@
 import { tsThisType } from '@babel/types';
 // import { ol } from 'dist/static/libs/ol5/ol';
 import bus from '../../utils'
-import {baseurl,GaodeMap_img_wms,TiandiMap_img,TiandiMap_cia,TiandiMap_vec,TiandiMap_cva} from '../../assets/js/common_data'
+import {baseurl,GaodeMap_img_wms,TiandiMap_img,TiandiMap_cia,TiandiMap_vec,TiandiMap_cva,GaodeMap_img_wms_old} from '../../assets/js/common_data'
 import {mousePositionControl} from '../../assets/js/map_control_tool'
 import port from '../../assets/js/port'
 // import MousePosition from "ol/control/MousePosition";
@@ -173,10 +173,10 @@ export default {
                         // console.log('获取layers长度'+layers_arrays.length
 
                         //[TO-DO]生产环境需注释（图层比开发环境少1）
-                        var target_layer = layers_arrays[2]
+                        // var target_layer = layers_arrays[2]
 
                         //[TO-DO]生产环境需取消注释（图层比开发环境少1）
-                        // var target_layer = layers_arrays[1]
+                        var target_layer = layers_arrays[1]
                       
 
                         // console.log(target_layer)
@@ -301,11 +301,11 @@ export default {
                 target: 'olMap',
 
                 //地图容器中加载的图层:加载影像图(生产环境)
-                // layers: [GaodeMap_img_wms],
+                layers: [GaodeMap_img_wms],
 
 
                 //地图容器中加载的图层:加载影像图(开发环境)
-                layers: [TiandiMap_img, TiandiMap_cia],
+                // layers: [TiandiMap_img, TiandiMap_cia],
 
 
                 //地图容器中加载的图层:加载矢量图层(开发环境)
